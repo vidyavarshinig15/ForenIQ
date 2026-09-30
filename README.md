@@ -1,15 +1,17 @@
 # AI-Driven Intelligent UFDR Analysis System
 ### Advanced Digital Forensic Investigation Platform
 
-[![Status: Foundation Phase](https://img.shields.io/badge/Status-Foundation%20Phase-blue.svg)](#)
+[![Current Phase: Phase 2 Active](https://img.shields.io/badge/Current%20Phase-Phase%202%20Auth%20%26%20Cases-blue.svg)](#)
 [![Python 3.11+](https://img.shields.io/badge/Python-3.11%2B-green.svg)](#)
+[![Frontend: React + TypeScript](https://img.shields.io/badge/Frontend-React%20%2B%20TS-cyan.svg)](#)
+[![Security: Argon2id + JWT](https://img.shields.io/badge/Security-Argon2id%20%2B%20JWT-purple.svg)](#)
 [![License: Proprietary / Forensic Use](https://img.shields.io/badge/License-Proprietary-red.svg)](#)
 
 ---
 
-## 1. Project Overview
+## 1. Project Overview & Purpose
 
-The **AI-Driven Intelligent UFDR Analysis System** is an enterprise digital forensic investigation platform designed to ingest, process, normalize, correlate, index, search, and analyze very large Universal Forensic Data Extraction (UFDR) archives and mobile extractions.
+The **AI-Driven Intelligent UFDR Analysis System** is an enterprise digital forensic investigation platform engineered to ingest, process, normalize, correlate, index, search, and analyze very large Universal Forensic Data Extraction (UFDR) archives and mobile extractions.
 
 Engineered to support millions of evidence records, the platform provides investigative teams with advanced semantic discovery, communication network graphs, timeline analysis, statistical anomaly detection, and grounded AI assistance while guaranteeing strict chain of custody, cryptographic evidence integrity, and full explainability.
 
@@ -18,127 +20,120 @@ Engineered to support millions of evidence records, the platform provides invest
 
 ---
 
-## 2. Core Development Principles
+## 2. Current Development Phase
 
-The engineering of this system strictly adheres to the ten foundational principles:
+**Active Phase:** `PHASE 2 — AUTHENTICATION, RBAC & CASE MANAGEMENT`
 
-1. **Principle 1 — Evidence First:** The evidence database is the absolute source of truth.
-2. **Principle 2 — Security First:** Never sacrifice security for convenience.
-3. **Principle 3 — Scalable by Design:** Streaming and chunking architectures that scale to millions of records.
-4. **Principle 4 — Modular:** Discrete boundaries separating API, workers, parsers, storage, and AI layers.
-5. **Principle 5 — Traceable:** Every finding traces through: $\text{Evidence} \rightarrow \text{Artifact} \rightarrow \text{Record} \rightarrow \text{Analysis} \rightarrow \text{Finding} \rightarrow \text{Report}$.
-6. **Principle 6 — Explainable:** Transparent citations and metrics explain why any analytical output or AI response was generated.
-7. **Principle 7 — Reproducible:** Deterministic processing configurations yield identical results on identical evidence archives.
-8. **Principle 8 — Failure Tolerant:** Single malformed XML nodes or damaged artifacts do not crash the case processing pipeline.
-9. **Principle 9 — No Hallucinated Evidence:** AI models are constrained strictly to retrieved context; if evidence is absent, the system explicitly states it.
-10. **Principle 10 — No Autonomous Accusations:** Human investigators evaluate facts; the system never outputs moral or criminal conclusions.
+Phase 2 implements the core security, identity, and investigative boundary architecture:
+1. **Cryptographic Authentication:** Password storage secured using **Argon2id** (`argon2-cffi`), JWT access token generation and validation, session revocation via `/auth/logout`, and brute-force protection with automated rate-limiting.
+2. **User Identity & Normalized Accounts:** Strict case-insensitive email uniqueness, user role hierarchy (`ADMIN`, `INVESTIGATOR`, `ANALYST`, `VIEWER`), and initial administrator auto-bootstrap (`admin@ufdr.org`).
+3. **Forensic Case Governance:** Full Case lifecycle management (`OPEN`, `IN_PROGRESS`, `CLOSED`, `ARCHIVED`), automated unique case numbering (`CASE-YYYY-XXXXXX`), and non-destructive soft archiving.
+4. **Dual-Tier Authorization & IDOR Defense:** Enforces both system RBAC and explicit case membership (`CaseMember`). Unauthorized users cannot access or enumerate cases by ID.
+5. **Tamper-Evident Audit Trail:** Append-only audit logger capturing all authentications, case operations, and authorization violations without leaking secrets.
+6. **Relational Database Migrations:** SQLAlchemy 2.0 async engine with Alembic migration scripts.
+7. **Examiner Workstation Frontend:** Interactive React interface with full `/login` screen, protected routes, Cases dashboard with search/filtering, and interactive Case Details page with member management.
 
 ---
 
-## 3. Architecture Overview
+## 3. High-Level Architecture
 
 ```
-Evidence Upload (UFDR ZIP)
-        │
-        ▼
-Validation & Cryptographic Hashing (SHA-256)
-        │
-        ▼
-Background Processing Queue (Redis Broker)
-        │
-        ▼
-Worker Cluster: Streaming Decompression & Iterative XML Parsing
-        │
-        ▼
-Forensic Normalization to Canonical Evidence Model (CEM)
-        │
-        ├──────────────────────┬──────────────────────┐
-        ▼                      ▼                      ▼
-Relational Storage       Document Store         Search & Vector
-(PostgreSQL)             (MongoDB)              (OpenSearch / FAISS)
-- Cases & Members        - Raw XML Payloads     - Inverted Index
-- Canonical Index        - Raw JSON States      - Semantic Embeddings
-- Audit Trail Logs
-        │
-        ▼
-Investigative Analysis Subsystems
-- Timeline Engine (Chronological alignment)
-- Communication Graph (Entity networks & centrality)
-- Anomaly Detection (Isolation Forest statistical outliers)
-- Grounded RAG (Provider-agnostic LLM with mandatory citations)
-        │
-        ▼
-Investigator Workstation (React High-Density UI) & Court-Ready Forensic Reports
+User (Examiner)
+      │
+      ▼
+Perimeter Security & Auth Middleware [Phase 1-2]
+ - Security Headers (nosniff, DENY, no-store)
+ - Bearer JWT Token Verification
+ - Brute-Force Rate Limiter
+      │
+      ▼
+Dual-Tier Authorization Gate [Phase 2]
+ ├── Tier 1: System RBAC (ADMIN, INVESTIGATOR, ANALYST, VIEWER)
+ └── Tier 2: Case Scoping (CaseMember verification / IDOR Protection)
+      │
+      ▼
+Application Layer [Phase 2]
+ ├── AuthService (Argon2id Hashing, JWT Tokens, Logout)
+ ├── CaseService (Case Numbering, Status Lifecycle, Membership)
+ └── AuditService (Append-Only Event Trail)
+      │
+      ▼
+Relational Database (SQLAlchemy + Alembic Migrations) [Phase 2]
+ - users: Investigator identities & password hashes
+ - cases: Organizational boundaries (CASE-YYYY-XXXXXX)
+ - case_members: Explicit scoping grants
+ - audit_logs: Tamper-evident forensic ledger
 ```
 
-Comprehensive architecture details are available in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+---
+
+## 4. Local Development Setup
+
+### 4.1 Backend Setup
+```bash
+cd backend
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+
+# Run database migrations
+alembic upgrade head
+
+# Start FastAPI development server
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+```
+
+Verify backend:
+```bash
+curl http://localhost:8000/api/v1/health
+# Response: {"status": "ok"}
+```
+
+API documentation: `http://localhost:8000/api/v1/docs`
+
+### 4.2 Initial Development Credentials
+A bootstrap administrator account is provisioned on initial launch:
+* **Email:** `admin@ufdr.org`
+* **Password:** `ForensicAdmin2026!`
+* **Role:** `ADMIN`
+
+### 4.3 Frontend Setup
+```bash
+cd frontend
+npm install
+npm run dev
+```
+Access the investigator workstation at `http://localhost:3000`.
 
 ---
 
-## 4. Planned System Modules
-
-* **`backend/`**: FastAPI REST API providing authentication, RBAC, case scoping, search brokerage, and audit log tracking.
-* **`parser/`**: Pluggable extraction engines supporting UFDR, XML reports, and mobile database formats with strict ZipSlip and XXE safeguards.
-* **`workers/`**: Asynchronous task workers executing chunked extraction, normalization, and indexing via Redis queues.
-* **`database/`**: Polyglot storage abstraction managing PostgreSQL relational schemas and MongoDB document repositories.
-* **`analytics/`**: Graph analysis (NetworkX), timeline aggregation, and statistical anomaly detection (Scikit-Learn Isolation Forest).
-* **`ai/`**: Retrieval-Augmented Generation (RAG) pipeline with prompt injection defenses and strict citation enforcement.
-* **`frontend/`**: High-density React workstation for forensic examiners (no toy dashboards; focused on tabular, timeline, and graph views).
-* **`docs/`**: Forensic standards, data models, threat analysis, and development specifications.
-
----
-
-## 5. Local Development Requirements
-
-* **Operating System:** macOS Sonoma+ or Linux (Ubuntu 22.04+)
-* **Python:** 3.11 or 3.12+ (Python 3.13 supported)
-* **Node.js:** v20.0+ / npm v10.0+
-* **PostgreSQL:** 16+ (Relational store)
-* **MongoDB:** 7.0+ (Document store)
-* **Redis:** 7.2+ (Task queue & caching broker)
-* **Search / Vector:** OpenSearch 2.12+ / FAISS
-
----
-
-## 6. Environment Configuration Overview
-
-A template configuration is provided in `.env.example`:
+## 5. Running Tests
 
 ```bash
-# Copy the template to create your local environment file
-cp .env.example .env
-```
+# Run all backend tests (Phase 1 & Phase 2)
+backend/.venv/bin/pytest backend/tests
 
-Key environment configurations include:
-* `DATABASE_URL`: Connection string for PostgreSQL relational store.
-* `MONGODB_URI`: Connection string for MongoDB raw artifact store.
-* `REDIS_URL`: Connection string for Redis broker.
-* `SECRET_KEY`: High-entropy 256-bit secret for signing JWT access tokens.
-* `EVIDENCE_STORAGE_PATH`: Secure, non-executable volume for raw evidence archives.
+# Run global foundation structure tests
+backend/.venv/bin/pytest tests/unit
 
----
-
-## 7. Testing Strategy
-
-Forensic software requires uncompromising test rigor:
-* **Unit Tests:** Verify individual normalizers, parsing routines, and hash calculations.
-* **Security Tests:** Rigorously test ZIP slip protection, XML entity expansion defense, and case-boundary access control.
-* **Integration Tests:** Verify end-to-end database writes and queue-worker lifecycle.
-* **Synthetic Datasets Only:** Automated tests execute exclusively against synthetically generated UFDR archives with known ground-truth networks, timestamps, and injected anomalies. Real private evidence is strictly prohibited in tests.
-
-To run the test suite:
-```bash
-pytest
+# Verify frontend production build
+npm --prefix frontend run build
 ```
 
 ---
 
-## 8. Documentation Index
+## 6. Current Limitations (Phase 2)
 
-Detailed specifications are maintained in the [`docs/`](docs/) directory:
-* [Architecture Specification](docs/ARCHITECTURE.md)
-* [Security & Threat Model](docs/SECURITY.md)
-* [Canonical Data Model](docs/DATA_MODEL.md)
-* [API Specifications](docs/API.md)
-* [Developer Guide](docs/DEVELOPMENT.md)
-* [Forensic Traceability & Ethics](docs/FORENSIC_TRACEABILITY.md)
+* **No Evidence Ingestion:** Parsing UFDR archives, streaming decompression, and raw file integrity hashing are scheduled for Phase 3.
+* **No Document Store:** MongoDB raw artifact payload storage will be introduced in Phase 3.
+* **No Background Worker Cluster:** Redis queues and worker tasks will be established in Phase 3.
+* **No Search or Analytics Subsystems:** Vector search, timeline analytics, and communication graphs are scheduled for Phases 4–5.
+
+---
+
+## 7. Upcoming Roadmap
+
+* **Phase 3:** Secure Evidence Ingestion, Streaming ZIP Decompression, Iterative XML Parser, and MongoDB Storage
+* **Phase 4:** Search Subsystem (Inverted Index + Vector Embeddings) and Unified Timeline Analysis
+* **Phase 5:** Communication Graph Analysis, Isolation Forest Anomaly Detection, and Investigator Workspace
+* **Phase 6:** Evidence-Grounded RAG and Court-Ready Forensic Reporting

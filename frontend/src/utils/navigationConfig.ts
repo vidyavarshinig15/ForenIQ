@@ -1,0 +1,81 @@
+import type { NavigationItem } from '../types/navigation';
+
+export const NAVIGATION_ITEMS: NavigationItem[] = [
+  {
+    id: 'dashboard',
+    label: 'Dashboard',
+    category: 'Core',
+    description: 'High-level operational overview, active cases, evidence ingestion queues, and health metrics.',
+    plannedPhase: 'Phase 2: Authentication, RBAC & Case Management',
+  },
+  {
+    id: 'cases',
+    label: 'Cases',
+    category: 'Core',
+    description: 'Forensic case registry, investigator assignments, custody officers, and case scoping boundaries.',
+    plannedPhase: 'Phase 2: Authentication, RBAC & Case Management',
+  },
+  {
+    id: 'evidence',
+    label: 'Evidence',
+    category: 'Core',
+    description: 'UFDR archive ingestion, streaming decompression, SHA-256 integrity verification, and parsing pipelines.',
+    plannedPhase: 'Phase 3: Evidence Ingestion & Parsing Engine',
+  },
+  {
+    id: 'investigations',
+    label: 'Investigations',
+    category: 'Core',
+    description: 'Investigator workspace for bookmarking, tagging evidence, logging hypotheses, and structuring findings.',
+    plannedPhase: 'Phase 5: Investigator Workspace & Correlation',
+  },
+  {
+    id: 'search',
+    label: 'Search',
+    category: 'Forensic Analysis',
+    description: 'Inverted index full-text search, exact identifier queries (IMEI/phone), and Sentence-BERT semantic discovery.',
+    plannedPhase: 'Phase 4: Search & Vector Indexing Subsystem',
+  },
+  {
+    id: 'timeline',
+    label: 'Timeline',
+    category: 'Forensic Analysis',
+    description: 'Unified cross-artifact chronological timeline spanning calls, chats, system events, and GPS fixes.',
+    plannedPhase: 'Phase 4: Timeline & Temporal Analysis',
+  },
+  {
+    id: 'graph',
+    label: 'Communication Graph',
+    category: 'Forensic Analysis',
+    description: 'Multi-entity interaction graph modeling people, accounts, and phone numbers with centrality and community metrics.',
+    plannedPhase: 'Phase 5: Communication Graph & Network Analysis',
+  },
+  {
+    id: 'anomalies',
+    label: 'Anomalies',
+    category: 'Forensic Analysis',
+    description: 'Isolation Forest statistical outlier detection identifying frequency spikes, impossible velocities, and bulk deletions.',
+    plannedPhase: 'Phase 5: Statistical Anomaly Detection',
+  },
+  {
+    id: 'reports',
+    label: 'Reports',
+    category: 'Governance',
+    description: 'Automated forensic report generator producing court-ready, evidence-grounded PDF/HTML case documentation.',
+    plannedPhase: 'Phase 6: Forensic Reporting Engine',
+  },
+  {
+    id: 'audit',
+    label: 'Audit Logs',
+    category: 'Governance',
+    description: 'Immutable, tamper-evident audit trail capturing every case access, query, export, and verification event.',
+    plannedPhase: 'Phase 2: Authentication, RBAC & Audit System',
+  },
+  {
+    id: 'settings',
+    label: 'Settings',
+    category: 'Governance',
+    description: 'System-wide configuration, storage volumes, worker cluster concurrency, and AI model parameters.',
+    plannedPhase: 'Phase 2: Security & Configuration Management',
+  },
+];

@@ -1,98 +1,112 @@
 # AI-Driven Intelligent UFDR Analysis System
 ## Developer Guide & Engineering Conventions
 
-**Document Version:** 1.0.0  
-**Classification:** Development & Engineering Standards  
-**Status:** Foundation Phase  
+**Document Version:** 1.2.0  
+**Current Phase:** Phase 2 — Authentication, RBAC & Case Management  
+**Status:** Active  
 
 ---
 
-## 1. Local Development Toolchain & Prerequisites
+## 1. System Requirements & Runtime Environment
 
-* **Operating System:** Linux (Ubuntu 22.04+ / Debian 12+) or macOS (Sonoma+)
-* **Python Runtime:** Python 3.11+ (Python 3.13 supported)
-* **Node Runtime:** Node.js v20+ / npm v10+
-* **Primary Relational Store:** PostgreSQL 16+
-* **Document Store:** MongoDB 7.0+
-* **Message Broker & In-Memory Cache:** Redis 7.2+
-* **Search / Vector Infrastructure:** OpenSearch 2.12+ (or Elasticsearch 8+) and FAISS / Qdrant
+* **Operating System:** macOS Sonoma+ or Linux (Ubuntu 22.04+)
+* **Python:** Python 3.11, 3.12, or 3.13
+* **Node.js:** Node.js v20.0+ / npm v10.0+
+* **Package Managers:** `pip` (Python), `npm` (Node)
 
 ---
 
-## 2. Project Directory Organization
+## 2. Local Development Setup & Execution
 
-```
-ufdr/
-├── backend/            # FastAPI application services, API routers, dependencies, config
-├── workers/            # Background worker definitions, queue listeners, job orchestrators
-├── parser/             # UFDR archive parser plugins, streaming decompressor, normalizers
-├── analytics/          # Timeline aggregation, graph analysis (NetworkX), anomaly detectors
-├── ai/                 # Grounded RAG orchestrator, LLM provider abstraction, embeddings
-├── database/           # Relational schema (Alembic/PostgreSQL) and MongoDB ODM/connectors
-├── frontend/           # React SPA application (TypeScript, forensic UI components)
-├── tests/              # Comprehensive test suites
-│   ├── unit/           # Unit tests (models, parsers, validators, utils)
-│   ├── integration/    # Integration tests (DB persistence, worker queues, search)
-│   └── security/       # Security tests (path traversal, XXE, auth, rate limiting)
-├── docs/               # System specifications, threat models, API references
-├── scripts/            # Development automation, synthetic dataset generators, migrations
-└── infra/              # Docker Compose services, local development containers
-```
+### 2.1 Backend Service
 
----
-
-## 3. Engineering Guidelines & Coding Standards
-
-### 3.1 Python Conventions
-* **Strict Type Annotations:** All production functions, methods, and API contracts must include Python 3.11+ type hints (`typing` / built-in generics).
-* **Code Formatting & Linting:** Strict adherence to PEP 8 standards enforced via `ruff` and `black`.
-* **Data Validation:** All external data representations, API bodies, and configuration parameters must be modeled using **Pydantic v2**.
-* **Zero Hard-Coded Credentials:** All secrets, connection strings, and configuration toggles must be sourced via Pydantic `BaseSettings` reading environment variables.
-
-### 3.2 Error Handling & Logging
-* Never use bare `except:` clauses. Always catch specific domain exceptions.
-* Use structured logging (`structlog` or standard library logging with JSON formatting).
-* Never log raw passwords, authentication tokens, or private evidence contents.
-
----
-
-## 4. Synthetic Forensic Datasets & Testing Strategy
-
-### 4.1 Strict Policy on Real Evidence
-* **Rule:** Never use real, private, or operational forensic evidence during development or automated testing.
-* All testing must utilize **synthetic forensic datasets** generated specifically for testing purposes.
-
-### 4.2 Synthetic Test Dataset Design
-Test fixtures must simulate realistic UFDR XML/ZIP archives containing:
-1. Known communication networks (e.g. 10 synthetic entities with known phone numbers).
-2. Known chronological timelines (calls, messages, location coordinates with verified timestamps).
-3. Injected anomalies (e.g., sudden burst of 500 messages at 03:00 AM, impossible geographic velocity).
-4. Malicious test payloads (test ZIP slips, safe XXE payloads to verify parser defense rejection).
-
-### 4.3 Testing Pyramid & Execution
 ```bash
-# Execute unit test suite
-pytest tests/unit
+# 1. Navigate to backend directory
+cd backend
 
-# Execute security validation tests
-pytest tests/security
+# 2. Create and activate Python virtual environment
+python3 -m venv .venv
+source .venv/bin/activate
 
-# Execute integration tests against test databases
-pytest tests/integration
+# 3. Install backend dependencies
+pip install -r requirements.txt
+
+# 4. Run database migrations
+alembic upgrade head
+
+# 5. Start the FastAPI development server
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+```
+
+Verify backend is responding:
+```bash
+curl -i http://localhost:8000/api/v1/health
+# Expected: HTTP/1.1 200 OK -> {"status": "ok"}
+```
+
+Interactive API documentation is available at `http://localhost:8000/api/v1/docs` in development mode.
+
+### 2.2 Default Development Administrator Account
+During initial application startup or migration, a bootstrap administrator account is automatically created from environment settings:
+* **Email:** `admin@ufdr.org`
+* **Password:** `ForensicAdmin2026!`
+* **Role:** `ADMIN`
+
+### 2.3 Frontend Application
+
+```bash
+# 1. Navigate to frontend directory
+cd frontend
+
+# 2. Install npm dependencies
+npm install
+
+# 3. Start Vite development server
+npm run dev
+```
+
+The frontend will be available at `http://localhost:3000`. The Vite development server automatically proxies requests from `/api` to the backend running at `http://localhost:8000`.
+
+To build the production bundle:
+```bash
+npm run build
 ```
 
 ---
 
-## 5. Git & Version Control Conventions
+## 3. Database Migrations with Alembic
 
-1. **Branch Naming:**
-   * `feat/phase-<number>-<feature-description>`
-   * `fix/<bug-description>`
-   * `docs/<documentation-update>`
-2. **Commit Messages:**
-   Follow Conventional Commits:
-   * `feat(parser): add streaming XML iterator for UFDR message nodes`
-   * `fix(security): sanitize archive member path against path traversal`
-   * `test(anomaly): add unit tests for Isolation Forest feature matrix`
-3. **Commit Restrictions:**
-   Never commit `.env`, binary extractions, or large synthetic archives to the repository.
+All relational schema modifications must be managed via Alembic:
+
+```bash
+# Generate a new autogenerated migration script from models
+cd backend
+alembic revision --autogenerate -m "describe_changes"
+
+# Apply all pending migrations to the database
+alembic upgrade head
+
+# Rollback one migration step
+alembic downgrade -1
+```
+
+---
+
+## 4. Testing Conventions
+
+### 4.1 Running Backend Tests
+Execute the backend pytest suite covering authentication, RBAC, IDOR protection, case management, and audit logging:
+```bash
+backend/.venv/bin/pytest backend/tests
+```
+
+### 4.2 Running Global Foundation Tests
+```bash
+backend/.venv/bin/pytest tests/unit
+```
+
+### 4.3 Key Security Test Scenarios Covered
+* `test_auth.py`: Argon2id password verification, email case normalization, generic error messages, brute-force rate limit protection.
+* `test_cases.py`: Case lifecycle (`OPEN` → `IN_PROGRESS` → `CLOSED`), case number generation, membership roles.
+* `test_authorization_idor.py`: Verifies that Investigator A cannot read, update, or alter Investigator B's case records; checks Viewer role restrictions.
+* `test_audit.py`: Confirms that authentication, case mutations, and unauthorized access attempts generate tamper-evident audit records.
