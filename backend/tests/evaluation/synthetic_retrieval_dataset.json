@@ -1,0 +1,168 @@
+{
+  "dataset_version": "1.0.0",
+  "description": "Synthetic evaluation dataset for forensic retrieval benchmarking. All data is purely synthetic and contains zero real PII.",
+  "records": [
+    {
+      "id": "c0000000-0000-0000-0000-000000000001",
+      "artifact_type": "MESSAGE",
+      "application": "WhatsApp",
+      "sender": "+1555123456",
+      "receiver": "+1555987654",
+      "event_timestamp": "2026-09-30T14:30:00Z",
+      "content": "Let's arrange a meeting tomorrow at 3 PM near the coffee shop downtown to discuss the contract.",
+      "source_file": "whatsapp_messages.db",
+      "record_identifier": "msg_wa_101",
+      "entities": [{"type": "LOCATION", "value": "coffee shop downtown"}, {"type": "DATE", "value": "tomorrow at 3 PM"}]
+    },
+    {
+      "id": "c0000000-0000-0000-0000-000000000002",
+      "artifact_type": "MESSAGE",
+      "application": "Signal",
+      "sender": "+1555987654",
+      "receiver": "+1555123456",
+      "event_timestamp": "2026-09-30T14:35:00Z",
+      "content": "Confirmed, see you at the cafe tomorrow afternoon. Bring the signed documents.",
+      "source_file": "signal_messages.db",
+      "record_identifier": "msg_sig_202",
+      "entities": [{"type": "LOCATION", "value": "cafe"}, {"type": "DATE", "value": "tomorrow afternoon"}]
+    },
+    {
+      "id": "c0000000-0000-0000-0000-000000000003",
+      "artifact_type": "MESSAGE",
+      "application": "Telegram",
+      "sender": "+1555444333",
+      "receiver": "+1555123456",
+      "event_timestamp": "2026-09-29T10:15:00Z",
+      "content": "Please send 2.5 BTC to wallet address bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh for the server hosting fees.",
+      "source_file": "telegram_cache.db",
+      "record_identifier": "msg_tg_303",
+      "entities": [{"type": "ACCOUNT", "value": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh"}, {"type": "MONEY", "value": "2.5 BTC"}]
+    },
+    {
+      "id": "c0000000-0000-0000-0000-000000000004",
+      "artifact_type": "MESSAGE",
+      "application": "Telegram",
+      "sender": "+1555123456",
+      "receiver": "+1555444333",
+      "event_timestamp": "2026-09-29T10:20:00Z",
+      "content": "Transaction broadcasted on bitcoin network, transaction hash 9b3d7f1e4a5c8e2b.",
+      "source_file": "telegram_cache.db",
+      "record_identifier": "msg_tg_304",
+      "entities": [{"type": "ACCOUNT", "value": "9b3d7f1e4a5c8e2b"}]
+    },
+    {
+      "id": "c0000000-0000-0000-0000-000000000005",
+      "artifact_type": "BROWSER",
+      "application": "Chrome",
+      "sender": null,
+      "receiver": null,
+      "event_timestamp": "2026-09-28T18:00:00Z",
+      "content": "Search: flight booking London to Geneva one-way ticket October 5th airline schedule",
+      "source_file": "history.db",
+      "record_identifier": "hist_chr_505",
+      "entities": [{"type": "LOCATION", "value": "London"}, {"type": "LOCATION", "value": "Geneva"}]
+    },
+    {
+      "id": "c0000000-0000-0000-0000-000000000006",
+      "artifact_type": "MESSAGE",
+      "application": "Email",
+      "sender": "reservations@airline-travel.com",
+      "receiver": "suspect@securemail.org",
+      "event_timestamp": "2026-09-28T18:30:00Z",
+      "content": "Your flight reservation #LX440 from London Heathrow to Geneva Airport has been confirmed for Oct 5.",
+      "source_file": "email_store.eml",
+      "record_identifier": "eml_606",
+      "entities": [{"type": "LOCATION", "value": "London Heathrow"}, {"type": "LOCATION", "value": "Geneva Airport"}]
+    },
+    {
+      "id": "c0000000-0000-0000-0000-000000000007",
+      "artifact_type": "MESSAGE",
+      "application": "Signal",
+      "sender": "+1555777888",
+      "receiver": "+1555123456",
+      "event_timestamp": "2026-09-27T09:00:00Z",
+      "content": "Wire transfer of $50,000 sent to Swiss Bank account IBAN CH9300000000000000000.",
+      "source_file": "signal_messages.db",
+      "record_identifier": "msg_sig_707",
+      "entities": [{"type": "ACCOUNT", "value": "CH9300000000000000000"}, {"type": "MONEY", "value": "$50,000"}]
+    },
+    {
+      "id": "c0000000-0000-0000-0000-000000000008",
+      "artifact_type": "CALL",
+      "application": "Phone",
+      "sender": "+1555123456",
+      "receiver": "+1555777888",
+      "event_timestamp": "2026-09-27T09:05:00Z",
+      "content": "Outgoing voice call to banking officer regarding international wire transfer verification.",
+      "source_file": "call_log.db",
+      "record_identifier": "call_808",
+      "entities": [{"type": "PHONE_NUMBER", "value": "+1555777888"}]
+    },
+    {
+      "id": "c0000000-0000-0000-0000-000000000009",
+      "artifact_type": "MESSAGE",
+      "application": "SMS",
+      "sender": "+1555000111",
+      "receiver": "+1555123456",
+      "event_timestamp": "2026-09-26T12:00:00Z",
+      "content": "Security alert: Your account password was changed from an unrecognized IP address. If this was not you, reset now.",
+      "source_file": "sms.db",
+      "record_identifier": "sms_909",
+      "entities": [{"type": "ACCOUNT", "value": "password reset"}]
+    },
+    {
+      "id": "c0000000-0000-0000-0000-000000000010",
+      "artifact_type": "BROWSER",
+      "application": "Safari",
+      "sender": null,
+      "receiver": null,
+      "event_timestamp": "2026-09-26T12:05:00Z",
+      "content": "Visited url https://auth.secure-portal.com/password/reset?token=9f8e7d6c5b",
+      "source_file": "safari_history.plist",
+      "record_identifier": "safari_010",
+      "entities": [{"type": "URL", "value": "https://auth.secure-portal.com/password/reset"}]
+    }
+  ],
+  "evaluation_queries": [
+    {
+      "query_id": "Q1",
+      "query": "conversations discussing arranging a meeting tomorrow",
+      "relevant_record_ids": [
+        "c0000000-0000-0000-0000-000000000001",
+        "c0000000-0000-0000-0000-000000000002"
+      ]
+    },
+    {
+      "query_id": "Q2",
+      "query": "cryptocurrency bitcoin wallet transactions and fees",
+      "relevant_record_ids": [
+        "c0000000-0000-0000-0000-000000000003",
+        "c0000000-0000-0000-0000-000000000004"
+      ]
+    },
+    {
+      "query_id": "Q3",
+      "query": "flight bookings and airline travel to Geneva",
+      "relevant_record_ids": [
+        "c0000000-0000-0000-0000-000000000005",
+        "c0000000-0000-0000-0000-000000000006"
+      ]
+    },
+    {
+      "query_id": "Q4",
+      "query": "bank wire transfers to Swiss accounts",
+      "relevant_record_ids": [
+        "c0000000-0000-0000-0000-000000000007",
+        "c0000000-0000-0000-0000-000000000008"
+      ]
+    },
+    {
+      "query_id": "Q5",
+      "query": "password reset security alert unauthorized access",
+      "relevant_record_ids": [
+        "c0000000-0000-0000-0000-000000000009",
+        "c0000000-0000-0000-0000-000000000010"
+      ]
+    }
+  ]
+}

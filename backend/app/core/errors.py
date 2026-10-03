@@ -34,6 +34,11 @@ class EntityNotFoundException(ForensicAppException):
         )
 
 
+class CaseNotFoundException(EntityNotFoundException):
+    def __init__(self, message: str = "Requested forensic case not found"):
+        super().__init__(message=message)
+
+
 class PermissionDeniedException(ForensicAppException):
     def __init__(self, message: str = "Access denied"):
         super().__init__(

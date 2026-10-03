@@ -32,10 +32,27 @@ async def lifespan(app: FastAPI):
             auth_service = AuthService(session)
             await auth_service.ensure_bootstrap_admin()
             logger.info("Bootstrap administrator verified.")
+
+        # Start asynchronous WorkerPool
+        from backend.app.queue import get_worker_pool, get_job_queue
+        worker_pool = await get_worker_pool()
+        await worker_pool.start()
+        logger.info(f"Worker pool active with concurrency={worker_pool.concurrency}.")
     except Exception as e:
-        logger.error(f"Database initialization error: {e}", exc_info=True)
+        logger.error(f"Initialization error: {e}", exc_info=True)
 
     yield
+
+    # Gracefully shutdown worker pool and queue
+    try:
+        from backend.app.queue import get_worker_pool, get_job_queue
+        worker_pool = await get_worker_pool()
+        await worker_pool.stop()
+        queue = await get_job_queue()
+        await queue.close()
+    except Exception as e:
+        logger.error(f"Error shutting down worker pool/queue: {e}")
+
     logger.info(f"Shutting down {settings.APP_NAME}")
 
 

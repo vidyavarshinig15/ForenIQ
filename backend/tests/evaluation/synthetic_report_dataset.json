@@ -1,0 +1,36 @@
+{
+  "dataset_metadata": {
+    "name": "Forensic Report Generation Synthetic Evaluation Dataset",
+    "version": "1.0.0",
+    "description": "Synthetic multi-source forensic case data for validating structured report compilation, citation validation, PDF/JSON generation, versioning, and SHA-256 integrity verification.",
+    "cases_count": 1
+  },
+  "sample_case": {
+    "case_number": "CASE-REPORT-SYN-001",
+    "title": "Corporate Data Exfiltration Forensic Investigation",
+    "description": "Investigation into unauthorized extraction of proprietary source code and client registries via mobile devices.",
+    "evidence_items": [
+      {
+        "evidence_number": "EVD-REP-01",
+        "original_filename": "suspect_phone.ufdr",
+        "sha256_hash": "a1b2c3d4e5f67890123456789abcdef0123456789abcdef0123456789abcdef0",
+        "integrity_status": "VALID",
+        "artifact_count": 45
+      }
+    ],
+    "findings": [
+      {
+        "title": "Off-Hours Data Transfer Activity",
+        "description": "Browser and filesystem interactions show archive upload at 02:18 AM UTC.",
+        "finding_type": "STATISTICAL_ANOMALY",
+        "source_type": "Timeline & Anomaly Subsystems"
+      },
+      {
+        "title": "Direct Call Burst with External Contact",
+        "description": "18 rapid communication events observed within a 15-minute window.",
+        "finding_type": "COMMUNICATION_PATTERN",
+        "source_type": "Graph & Anomaly Subsystems"
+      }
+    ]
+  }
+}

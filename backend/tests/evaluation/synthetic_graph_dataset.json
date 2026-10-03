@@ -1,0 +1,87 @@
+{
+  "description": "Synthetic Communication Graph & Social Network Analysis Evaluation Dataset",
+  "version": "1.0.0",
+  "test_scenarios": [
+    {
+      "id": "GRAPH-SCENARIO-001",
+      "title": "Two-Cluster Communication Network with Bridge Nodes",
+      "case_id": "00000000-0000-0000-0000-000000000001",
+      "records": [
+        {
+          "id": "c1000000-0000-0000-0000-000000000001",
+          "evidence_id": "e1000000-0000-0000-0000-000000000001",
+          "artifact_type": "MESSAGE",
+          "application": "WhatsApp",
+          "event_timestamp": "2026-09-15T10:00:00Z",
+          "sender": "+919876543210 (Rahul)",
+          "receiver": "+919876543211 (Vikram)",
+          "content": "Meeting at 10 AM"
+        },
+        {
+          "id": "c1000000-0000-0000-0000-000000000002",
+          "evidence_id": "e1000000-0000-0000-0000-000000000001",
+          "artifact_type": "CALL",
+          "application": "Phone Dialer",
+          "event_timestamp": "2026-09-15T10:30:00Z",
+          "sender": "+919876543211 (Vikram)",
+          "receiver": "+919876543212 (Office)",
+          "content": "Call duration 120s"
+        },
+        {
+          "id": "c1000000-0000-0000-0000-000000000003",
+          "evidence_id": "e1000000-0000-0000-0000-000000000001",
+          "artifact_type": "MESSAGE",
+          "application": "WhatsApp",
+          "event_timestamp": "2026-09-15T11:00:00Z",
+          "sender": "+919876543212 (Office)",
+          "receiver": "+919876543210 (Rahul)",
+          "content": "Invoice confirmed"
+        },
+        {
+          "id": "c1000000-0000-0000-0000-000000000004",
+          "evidence_id": "e1000000-0000-0000-0000-000000000001",
+          "artifact_type": "MESSAGE",
+          "application": "Email",
+          "event_timestamp": "2026-09-15T12:00:00Z",
+          "sender": "+919876543212 (Office)",
+          "receiver": "alice@finance.org",
+          "content": "Transmitting audit reports"
+        },
+        {
+          "id": "c1000000-0000-0000-0000-000000000005",
+          "evidence_id": "e1000000-0000-0000-0000-000000000001",
+          "artifact_type": "MESSAGE",
+          "application": "Signal",
+          "event_timestamp": "2026-09-15T13:00:00Z",
+          "sender": "alice@finance.org",
+          "receiver": "bob@finance.org",
+          "content": "Reviewing attached statement"
+        },
+        {
+          "id": "c1000000-0000-0000-0000-000000000006",
+          "evidence_id": "e1000000-0000-0000-0000-000000000001",
+          "artifact_type": "MESSAGE",
+          "application": "Signal",
+          "event_timestamp": "2026-09-15T14:00:00Z",
+          "sender": "bob@finance.org",
+          "receiver": "charlie@audit.org",
+          "content": "Audit signoff complete"
+        },
+        {
+          "id": "c1000000-0000-0000-0000-000000000007",
+          "evidence_id": "e1000000-0000-0000-0000-000000000001",
+          "artifact_type": "MESSAGE",
+          "application": "Signal",
+          "event_timestamp": "2026-09-15T15:00:00Z",
+          "sender": "charlie@audit.org",
+          "receiver": "alice@finance.org",
+          "content": "Received signoff"
+        }
+      ],
+      "expected_nodes_count": 6,
+      "expected_edges_count": 7,
+      "expected_communities_count": 2,
+      "expected_bridge_nodes": ["person:office:919876543212", "email:alice@finance.org"]
+    }
+  ]
+}

@@ -110,3 +110,27 @@ backend/.venv/bin/pytest tests/unit
 * `test_cases.py`: Case lifecycle (`OPEN` → `IN_PROGRESS` → `CLOSED`), case number generation, membership roles.
 * `test_authorization_idor.py`: Verifies that Investigator A cannot read, update, or alter Investigator B's case records; checks Viewer role restrictions.
 * `test_audit.py`: Confirms that authentication, case mutations, and unauthorized access attempts generate tamper-evident audit records.
+* `test_parser_and_processing.py`: Archive inspection, ZipSlip/ZipBomb defenses, streaming XML iterparse, partial failure handling, and multi-category extraction.
+* `test_phase6_scalable_processing.py`: Priority queue ordering (Redis & Database), worker heartbeat and lease timeout, stale job crash recovery reaper, idempotent re-parsing without duplicate artifacts, checkpoint and resumable ingestion, cooperative cancellation, non-admin priority enforcement, and original evidence hash preservation.
+* `test_phase7_normalization.py`: Unit and integration validation of timestamp normalization (ISO-8601, epochs, partial dates, invalid handling), phone and email normalization, application standardizers, specialized normalizers (Calls, Messages, Contacts, Locations, Browser, Filesystem), deterministic identity (UUIDv5) & SHA-256 canonical fingerprints, end-to-end normalization worker pipeline, idempotent deduplication, and IDOR access control.
+
+---
+
+## 5. Benchmarking Ingestion & Persistence Performance (Phase 6)
+
+A synthetic benchmark tool is provided in `scripts/benchmark_ingestion.py` to evaluate throughput, memory scalability, and database batch insert behavior:
+
+```bash
+# Run benchmark with 10,000 synthetic records in batches of 1,000
+backend/.venv/bin/python scripts/benchmark_ingestion.py --records 10000 --batch-size 1000
+
+# High-scale benchmark: 50,000 records in batches of 2,500
+backend/.venv/bin/python scripts/benchmark_ingestion.py --records 50000 --batch-size 2500
+```
+
+The script reports:
+* Total records persisted and total batches committed
+* Execution duration (seconds) and average throughput (records/sec)
+* Initial and peak process Resident Set Size (RSS memory in MB)
+* Verifies idempotency by re-inserting records and verifying 0 duplicates created.
+

@@ -18,3 +18,12 @@ def test_security_headers_present_on_health():
     assert response.headers.get("x-content-type-options") == "nosniff"
     assert response.headers.get("x-frame-options") == "DENY"
     assert "no-store" in response.headers.get("cache-control", "")
+
+
+def test_readiness_probe_endpoint():
+    response = client.get("/api/v1/ready")
+    assert response.status_code == 200
+    data = response.json()
+    assert data["status"] in ("ready", "degraded")
+    assert data["database"] == "connected"
+    assert "version" in data

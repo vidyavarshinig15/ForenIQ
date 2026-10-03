@@ -1,0 +1,303 @@
+[
+  {
+    "id": "eval-01",
+    "query": "Find all messages involving Rahul",
+    "expected_intent": "PERSON_LOOKUP",
+    "expected_entities": [
+      {"type": "PERSON", "text": "Rahul"},
+      {"type": "ARTIFACT_TYPE", "text": "messages"}
+    ],
+    "expected_temporal": null,
+    "expected_artifact_types": ["MESSAGE"],
+    "expected_recommended_mode": "HYBRID"
+  },
+  {
+    "id": "eval-02",
+    "query": "Show events related to the suspect on September 12",
+    "expected_intent": "EVENT_RETRIEVAL",
+    "expected_entities": [
+      {"type": "DATE", "text": "September 12"}
+    ],
+    "expected_temporal": {
+      "precision": "DAY"
+    },
+    "expected_artifact_types": [],
+    "expected_recommended_mode": "HYBRID"
+  },
+  {
+    "id": "eval-03",
+    "query": "Find communication between 9876543210 and 9123456789",
+    "expected_intent": "COMMUNICATION_ANALYSIS",
+    "expected_entities": [
+      {"type": "PHONE_NUMBER", "normalized_value": "+919876543210"},
+      {"type": "PHONE_NUMBER", "normalized_value": "+919123456789"}
+    ],
+    "expected_temporal": null,
+    "expected_artifact_types": [],
+    "expected_recommended_mode": "HYBRID"
+  },
+  {
+    "id": "eval-04",
+    "query": "What happened between 10 PM and midnight?",
+    "expected_intent": "TEMPORAL_INVESTIGATION",
+    "expected_entities": [],
+    "expected_temporal": {
+      "precision": "HOUR"
+    },
+    "expected_artifact_types": [],
+    "expected_recommended_mode": "SEMANTIC"
+  },
+  {
+    "id": "eval-05",
+    "query": "Show activity from device DEV_SEC_99",
+    "expected_intent": "DEVICE_LOOKUP",
+    "expected_entities": [
+      {"type": "DEVICE", "text": "DEV_SEC_99"}
+    ],
+    "expected_temporal": null,
+    "expected_artifact_types": [],
+    "expected_recommended_mode": "EXACT"
+  },
+  {
+    "id": "eval-06",
+    "query": "Show records associated with Mysuru",
+    "expected_intent": "LOCATION_LOOKUP",
+    "expected_entities": [
+      {"type": "LOCATION", "text": "Mysuru"}
+    ],
+    "expected_temporal": null,
+    "expected_artifact_types": [],
+    "expected_recommended_mode": "HYBRID"
+  },
+  {
+    "id": "eval-07",
+    "query": "Show WhatsApp activity from yesterday",
+    "expected_intent": "APPLICATION_ACTIVITY",
+    "expected_entities": [
+      {"type": "APPLICATION", "normalized_value": "WhatsApp"}
+    ],
+    "expected_temporal": {
+      "precision": "DAY"
+    },
+    "expected_artifact_types": [],
+    "expected_recommended_mode": "HYBRID"
+  },
+  {
+    "id": "eval-08",
+    "query": "Find evidence mentioning the stolen laptop",
+    "expected_intent": "GENERAL_EVIDENCE_SEARCH",
+    "expected_entities": [],
+    "expected_temporal": null,
+    "expected_artifact_types": [],
+    "expected_recommended_mode": "HYBRID"
+  },
+  {
+    "id": "eval-09",
+    "query": "Find WhatsApp messages sent by Rahul on 15 September",
+    "expected_intent": "APPLICATION_ACTIVITY",
+    "expected_entities": [
+      {"type": "APPLICATION", "normalized_value": "WhatsApp"},
+      {"type": "ARTIFACT_TYPE", "text": "messages"},
+      {"type": "PERSON", "text": "Rahul"}
+    ],
+    "expected_temporal": {
+      "precision": "DAY"
+    },
+    "expected_artifact_types": ["MESSAGE"],
+    "expected_recommended_mode": "HYBRID"
+  },
+  {
+    "id": "eval-10",
+    "query": "Show calls between +1-555-019-2834 and +1-555-019-5821",
+    "expected_intent": "COMMUNICATION_ANALYSIS",
+    "expected_entities": [
+      {"type": "ARTIFACT_TYPE", "text": "calls"},
+      {"type": "PHONE_NUMBER", "normalized_value": "+15550192834"},
+      {"type": "PHONE_NUMBER", "normalized_value": "+15550195821"}
+    ],
+    "expected_temporal": null,
+    "expected_artifact_types": ["CALL"],
+    "expected_recommended_mode": "HYBRID"
+  },
+  {
+    "id": "eval-11",
+    "query": "Find emails from suspect@darknet.org",
+    "expected_intent": "PERSON_LOOKUP",
+    "expected_entities": [
+      {"type": "EMAIL", "normalized_value": "suspect@darknet.org"},
+      {"type": "ARTIFACT_TYPE", "text": "emails"}
+    ],
+    "expected_temporal": null,
+    "expected_artifact_types": ["MESSAGE"],
+    "expected_recommended_mode": "HYBRID"
+  },
+  {
+    "id": "eval-12",
+    "query": "Show Telegram messages between September 1 and September 5",
+    "expected_intent": "APPLICATION_ACTIVITY",
+    "expected_entities": [
+      {"type": "APPLICATION", "normalized_value": "Telegram"},
+      {"type": "ARTIFACT_TYPE", "text": "messages"}
+    ],
+    "expected_temporal": {
+      "precision": "DAY"
+    },
+    "expected_artifact_types": ["MESSAGE"],
+    "expected_recommended_mode": "HYBRID"
+  },
+  {
+    "id": "eval-13",
+    "query": "What happened after 8 PM?",
+    "expected_intent": "TEMPORAL_INVESTIGATION",
+    "expected_entities": [],
+    "expected_temporal": {
+      "precision": "HOUR"
+    },
+    "expected_artifact_types": [],
+    "expected_recommended_mode": "SEMANTIC"
+  },
+  {
+    "id": "eval-14",
+    "query": "Show call logs from last week",
+    "expected_intent": "TEMPORAL_INVESTIGATION",
+    "expected_entities": [
+      {"type": "ARTIFACT_TYPE", "text": "call logs"}
+    ],
+    "expected_temporal": {
+      "precision": "DAY"
+    },
+    "expected_artifact_types": ["CALL"],
+    "expected_recommended_mode": "HYBRID"
+  },
+  {
+    "id": "eval-15",
+    "query": "Find photos taken in Bengaluru",
+    "expected_intent": "LOCATION_LOOKUP",
+    "expected_entities": [
+      {"type": "ARTIFACT_TYPE", "text": "photos"},
+      {"type": "LOCATION", "text": "Bengaluru"}
+    ],
+    "expected_temporal": null,
+    "expected_artifact_types": ["FILESYSTEM"],
+    "expected_recommended_mode": "HYBRID"
+  },
+  {
+    "id": "eval-16",
+    "query": "Find device with IMEI 356789012345678",
+    "expected_intent": "DEVICE_LOOKUP",
+    "expected_entities": [
+      {"type": "DEVICE", "text": "356789012345678"}
+    ],
+    "expected_temporal": null,
+    "expected_artifact_types": [],
+    "expected_recommended_mode": "EXACT"
+  },
+  {
+    "id": "eval-17",
+    "query": "Find Chrome browsing history before September 10",
+    "expected_intent": "APPLICATION_ACTIVITY",
+    "expected_entities": [
+      {"type": "APPLICATION", "normalized_value": "Chrome"},
+      {"type": "ARTIFACT_TYPE", "text": "browsing history"}
+    ],
+    "expected_temporal": {
+      "precision": "DAY"
+    },
+    "expected_artifact_types": ["BROWSER"],
+    "expected_recommended_mode": "HYBRID"
+  },
+  {
+    "id": "eval-18",
+    "query": "Show contacts for user @alice_crypto",
+    "expected_intent": "PERSON_LOOKUP",
+    "expected_entities": [
+      {"type": "ARTIFACT_TYPE", "text": "contacts"},
+      {"type": "ACCOUNT", "text": "@alice_crypto"}
+    ],
+    "expected_temporal": null,
+    "expected_artifact_types": ["CONTACT"],
+    "expected_recommended_mode": "HYBRID"
+  },
+  {
+    "id": "eval-19",
+    "query": "Search for bank transaction receipts and wire transfers",
+    "expected_intent": "GENERAL_EVIDENCE_SEARCH",
+    "expected_entities": [],
+    "expected_temporal": null,
+    "expected_artifact_types": [],
+    "expected_recommended_mode": "HYBRID"
+  },
+  {
+    "id": "eval-20",
+    "query": "Show activity from 10:00 to 12:00",
+    "expected_intent": "TEMPORAL_INVESTIGATION",
+    "expected_entities": [],
+    "expected_temporal": {
+      "precision": "MINUTE"
+    },
+    "expected_artifact_types": [],
+    "expected_recommended_mode": "SEMANTIC"
+  },
+  {
+    "id": "eval-21",
+    "query": "Show location history in Delhi this month",
+    "expected_intent": "LOCATION_LOOKUP",
+    "expected_entities": [
+      {"type": "ARTIFACT_TYPE", "text": "location history"},
+      {"type": "LOCATION", "text": "Delhi"}
+    ],
+    "expected_temporal": {
+      "precision": "MONTH"
+    },
+    "expected_artifact_types": ["LOCATION"],
+    "expected_recommended_mode": "HYBRID"
+  },
+  {
+    "id": "eval-22",
+    "query": "Find Signal chats mentioning offshore accounts",
+    "expected_intent": "APPLICATION_ACTIVITY",
+    "expected_entities": [
+      {"type": "APPLICATION", "normalized_value": "Signal"},
+      {"type": "ARTIFACT_TYPE", "text": "chats"}
+    ],
+    "expected_temporal": null,
+    "expected_artifact_types": ["MESSAGE"],
+    "expected_recommended_mode": "HYBRID"
+  },
+  {
+    "id": "eval-23",
+    "query": "Find messages from John Smith",
+    "expected_intent": "PERSON_LOOKUP",
+    "expected_entities": [
+      {"type": "ARTIFACT_TYPE", "text": "messages"},
+      {"type": "PERSON", "text": "John Smith"}
+    ],
+    "expected_temporal": null,
+    "expected_artifact_types": ["MESSAGE"],
+    "expected_recommended_mode": "HYBRID"
+  },
+  {
+    "id": "eval-24",
+    "query": "Show suspect communications on October 1",
+    "expected_intent": "COMMUNICATION_ANALYSIS",
+    "expected_entities": [
+      {"type": "DATE", "text": "October 1"}
+    ],
+    "expected_temporal": {
+      "precision": "DAY"
+    },
+    "expected_artifact_types": [],
+    "expected_recommended_mode": "HYBRID"
+  },
+  {
+    "id": "eval-25",
+    "query": "Find documents containing encrypted ransomware keys",
+    "expected_intent": "GENERAL_EVIDENCE_SEARCH",
+    "expected_entities": [
+      {"type": "ARTIFACT_TYPE", "text": "documents"}
+    ],
+    "expected_temporal": null,
+    "expected_artifact_types": ["FILESYSTEM"],
+    "expected_recommended_mode": "HYBRID"
+  }
+]

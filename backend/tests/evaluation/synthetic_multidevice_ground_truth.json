@@ -1,0 +1,155 @@
+{
+  "case_metadata": {
+    "case_number": "CASE-PHASE16-E2E-001",
+    "title": "Operation Apex — Synthetic Multi-Device Digital Forensics Benchmark",
+    "investigator": "Forensic Special Agent Dr. Prasad M R",
+    "scope_start": "2026-09-01T00:00:00Z",
+    "scope_end": "2026-09-30T23:59:59Z"
+  },
+  "ground_truth_entities": [
+    {
+      "entity_id": "ENT-ALEX-01",
+      "name": "Alex Mercer",
+      "phone": "+15550101",
+      "email": "alex.mercer@apex-corp.org",
+      "device": "Pixel 8 Pro (IMEI: 358291048291024)",
+      "role_description": "Primary Subject A"
+    },
+    {
+      "entity_id": "ENT-JORDAN-02",
+      "name": "Jordan Vance",
+      "phone": "+15550202",
+      "email": "jordan.vance@apex-corp.org",
+      "device": "iPhone 15 Pro (IMEI: 359182736452819)",
+      "role_description": "Associate B"
+    },
+    {
+      "entity_id": "ENT-CASEY-03",
+      "name": "Casey Reed",
+      "phone": "+15550303",
+      "email": "casey.reed@apex-corp.org",
+      "device": "Galaxy S24 (IMEI: 351928374650192)",
+      "role_description": "Associate C"
+    },
+    {
+      "entity_id": "ENT-MORGAN-04",
+      "name": "Morgan Blake",
+      "phone": "+15550404",
+      "email": "morgan.blake@external.net",
+      "device": "OnePlus 12 (IMEI: 357192837465920)",
+      "role_description": "External Contact D"
+    }
+  ],
+  "ground_truth_evidence_containers": [
+    {
+      "evidence_id": "EVD-DEV-001",
+      "source_filename": "device_alex_mercer.ufdr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "device_owner": "Alex Mercer"
+    },
+    {
+      "evidence_id": "EVD-DEV-002",
+      "source_filename": "device_jordan_vance.ufdr",
+      "sha256": "f4c2e55309fc2c250bfbf5c9996fb93538ae52e5759c045db506002c8963c966",
+      "device_owner": "Jordan Vance"
+    }
+  ],
+  "ground_truth_communications": [
+    {
+      "id": "COMM-001",
+      "type": "CALL",
+      "source": "+15550101",
+      "destination": "+15550202",
+      "timestamp": "2026-09-10T09:15:00Z",
+      "duration_seconds": 240,
+      "direction": "OUTGOING",
+      "content": "Call placed from Alex to Jordan regarding financial spreadsheet transfer."
+    },
+    {
+      "id": "COMM-002",
+      "type": "MESSAGE",
+      "source": "+15550101",
+      "destination": "+15550202",
+      "timestamp": "2026-09-10T09:20:00Z",
+      "app": "WhatsApp",
+      "content": "Did you verify the Swiss banking route for the offshore holding?"
+    },
+    {
+      "id": "COMM-003",
+      "type": "MESSAGE",
+      "source": "+15550202",
+      "destination": "+15550101",
+      "timestamp": "2026-09-10T09:21:30Z",
+      "app": "WhatsApp",
+      "content": "Confirmed. Routing key is APEX-LUX-9012. Casey has the encrypted token."
+    },
+    {
+      "id": "COMM-004",
+      "type": "CALL",
+      "source": "+15550202",
+      "destination": "+15550303",
+      "timestamp": "2026-09-11T14:30:00Z",
+      "duration_seconds": 180,
+      "direction": "OUTGOING",
+      "content": "Call between Jordan and Casey verifying server authentication."
+    },
+    {
+      "id": "COMM-005",
+      "type": "MESSAGE",
+      "source": "+15550303",
+      "destination": "+15550101",
+      "timestamp": "2026-09-12T11:00:00Z",
+      "app": "Signal",
+      "content": "Backup encryption credentials stored in file server /vault/ledger.enc"
+    }
+  ],
+  "ground_truth_injected_anomalies": [
+    {
+      "anomaly_id": "ANOM-BURST-01",
+      "type": "COMMUNICATION_FREQUENCY_BURST",
+      "window_timestamp": "2026-09-15T02:00:00Z",
+      "observed_event_count": 22,
+      "baseline_expected_rate": 1.5,
+      "anomaly_score": 0.895,
+      "description": "Statistically elevated message frequency spike occurring between 02:00 and 02:15 UTC."
+    },
+    {
+      "anomaly_id": "ANOM-SPEED-02",
+      "type": "IMPOSSIBLE_TRANSIT_VELOCITY",
+      "window_timestamp": "2026-09-18T16:00:00Z",
+      "observed_event_count": 2,
+      "baseline_expected_rate": 50.0,
+      "anomaly_score": 0.942,
+      "description": "Geographical displacement of 5,500 km within 20 minutes exceeds physical aircraft boundaries."
+    }
+  ],
+  "ground_truth_search_queries": [
+    {
+      "query": "Swiss banking offshore",
+      "expected_record_ids": ["COMM-002"],
+      "expected_intent": "FINANCIAL_TRANSACTION_QUERY"
+    },
+    {
+      "query": "+15550202",
+      "expected_record_ids": ["COMM-001", "COMM-002", "COMM-003", "COMM-004"],
+      "expected_intent": "ENTITY_COMMUNICATION_HISTORY"
+    },
+    {
+      "query": "APEX-LUX-9012",
+      "expected_record_ids": ["COMM-003"],
+      "expected_intent": "EXACT_IDENTIFIER_DISCOVERY"
+    }
+  ],
+  "ground_truth_rag_questions": [
+    {
+      "question": "What routing key was mentioned by Jordan Vance for the offshore holding?",
+      "expected_grounded_answer": "The routing key mentioned was APEX-LUX-9012.",
+      "mandatory_citation_content": "COMM-003"
+    },
+    {
+      "question": "Did Alex Mercer communicate with Morgan Blake on September 10?",
+      "expected_grounded_answer": "The available evidence does not show communication between Alex Mercer and Morgan Blake on September 10.",
+      "mandatory_citation_content": "INSUFFICIENT_EVIDENCE"
+    }
+  ]
+}

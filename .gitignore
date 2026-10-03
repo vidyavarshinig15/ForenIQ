@@ -29,6 +29,7 @@ MANIFEST
 # Virtual Environments
 .env
 .venv
+.venv/
 env/
 venv/
 ENV/
@@ -44,21 +45,38 @@ yarn-error.log*
 .next/
 out/
 dist/
+.vite/
 
-# Evidence & Raw Artifacts (Never commit real forensic data or big archives)
+# Forensic Evidence & Storage (Never commit real forensic data or big local archives)
 *.ufdr
 *.raw
 *.dd
 *.bin
 *.iso
+storage/
+backend/storage/
+**/storage/
 evidence_storage/
 uploads/
-storage/
+vector_indices/
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+*.sqlite3-shm
+*.sqlite3-wal
 
 # Environment and Secrets (CRITICAL)
 .env
 .env.*
 !.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+credentials.json
+service-account*.json
 
 # IDE & OS
 .vscode/
@@ -88,7 +106,9 @@ coverage.xml
 .hypothesis/
 .pytest_cache/
 
-# Celery / Redis state
+# Celery / Redis state & Logs
+*.log
+logs/
 celerybeat-schedule
 celerybeat.pid
 dump.rdb

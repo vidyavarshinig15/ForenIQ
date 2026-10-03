@@ -1,0 +1,95 @@
+{
+  "dataset_metadata": {
+    "name": "Forensic Timeline & Anomaly Detection Synthetic Evaluation Dataset",
+    "version": "1.0.0",
+    "description": "Synthetic timeline events containing standard activity and 3 injected anomaly scenarios with known ground truth for Precision, Recall, F1, and AUC evaluation.",
+    "total_events": 120,
+    "injected_anomalies_count": 3
+  },
+  "injected_anomalies": [
+    {
+      "scenario_id": "ANOM-SCENARIO-001",
+      "anomaly_type": "COMMUNICATION_BURST",
+      "target_window_start": "2026-09-15T21:15:00Z",
+      "target_window_end": "2026-09-15T21:30:00Z",
+      "description": "Rapid burst of 18 phone calls and messages within a 15-minute late evening window (baseline median: 1 event).",
+      "expected_classification": "ANOMALOUS"
+    },
+    {
+      "scenario_id": "ANOM-SCENARIO-002",
+      "anomaly_type": "UNUSUAL_TIME_OF_DAY",
+      "target_window_start": "2026-09-18T02:15:00Z",
+      "target_window_end": "2026-09-18T02:30:00Z",
+      "description": "Bulk application and file activity occurring at 02:15 AM off-hours (baseline median: 0 events).",
+      "expected_classification": "ANOMALOUS"
+    },
+    {
+      "scenario_id": "ANOM-SCENARIO-003",
+      "anomaly_type": "UNUSUAL_CONTACT_DIVERSITY",
+      "target_window_start": "2026-09-20T14:00:00Z",
+      "target_window_end": "2026-09-20T14:15:00Z",
+      "description": "Sudden communication with 10 distinct unique entities in a 15-minute window (baseline median: 1 contact).",
+      "expected_classification": "ANOMALOUS"
+    }
+  ],
+  "baseline_events": [
+    {"timestamp": "2026-09-01T09:10:00Z", "artifact_type": "CALL", "actor": "+919876543210", "target": "+919876543211", "application": "Phone", "metadata": {"duration": 120, "call_type": "OUTGOING"}},
+    {"timestamp": "2026-09-01T11:30:00Z", "artifact_type": "MESSAGE", "actor": "+919876543211", "target": "+919876543210", "application": "SMS", "metadata": {"direction": "INCOMING"}},
+    {"timestamp": "2026-09-01T15:00:00Z", "artifact_type": "LOCATION", "actor": "Device_01", "target": null, "application": "GPS", "metadata": {"latitude": 12.9716, "longitude": 77.5946}},
+    {"timestamp": "2026-09-02T10:00:00Z", "artifact_type": "CALL", "actor": "+919876543210", "target": "+919876543212", "application": "Phone", "metadata": {"duration": 45, "call_type": "OUTGOING"}},
+    {"timestamp": "2026-09-02T14:20:00Z", "artifact_type": "MESSAGE", "actor": "+919876543212", "target": "+919876543210", "application": "WhatsApp", "metadata": {"direction": "INCOMING"}},
+    {"timestamp": "2026-09-03T09:45:00Z", "artifact_type": "CALL", "actor": "+919876543213", "target": "+919876543210", "application": "Phone", "metadata": {"duration": 90, "call_type": "INCOMING"}},
+    {"timestamp": "2026-09-03T16:15:00Z", "artifact_type": "APPLICATION", "actor": "Device_01", "target": null, "application": "com.android.chrome", "metadata": {"package": "com.android.chrome"}},
+    {"timestamp": "2026-09-04T10:30:00Z", "artifact_type": "MESSAGE", "actor": "+919876543210", "target": "+919876543211", "application": "SMS", "metadata": {"direction": "OUTGOING"}},
+    {"timestamp": "2026-09-05T11:00:00Z", "artifact_type": "CALL", "actor": "+919876543210", "target": "+919876543212", "application": "Phone", "metadata": {"duration": 60, "call_type": "OUTGOING"}},
+    {"timestamp": "2026-09-06T12:00:00Z", "artifact_type": "LOCATION", "actor": "Device_01", "target": null, "application": "GPS", "metadata": {"latitude": 12.9720, "longitude": 77.5950}},
+    {"timestamp": "2026-09-07T09:15:00Z", "artifact_type": "MESSAGE", "actor": "+919876543211", "target": "+919876543210", "application": "WhatsApp", "metadata": {"direction": "INCOMING"}},
+    {"timestamp": "2026-09-08T10:20:00Z", "artifact_type": "CALL", "actor": "+919876543210", "target": "+919876543213", "application": "Phone", "metadata": {"duration": 180, "call_type": "OUTGOING"}},
+    {"timestamp": "2026-09-09T14:40:00Z", "artifact_type": "MESSAGE", "actor": "+919876543213", "target": "+919876543210", "application": "SMS", "metadata": {"direction": "INCOMING"}},
+    {"timestamp": "2026-09-10T11:10:00Z", "artifact_type": "CALL", "actor": "+919876543210", "target": "+919876543211", "application": "Phone", "metadata": {"duration": 50, "call_type": "OUTGOING"}},
+    {"timestamp": "2026-09-11T15:30:00Z", "artifact_type": "APPLICATION", "actor": "Device_01", "target": null, "application": "org.telegram.messenger", "metadata": {"package": "org.telegram.messenger"}},
+    {"timestamp": "2026-09-12T10:00:00Z", "artifact_type": "MESSAGE", "actor": "+919876543212", "target": "+919876543210", "application": "WhatsApp", "metadata": {"direction": "INCOMING"}},
+    {"timestamp": "2026-09-13T13:45:00Z", "artifact_type": "LOCATION", "actor": "Device_01", "target": null, "application": "GPS", "metadata": {"latitude": 12.9730, "longitude": 77.5960}},
+    {"timestamp": "2026-09-14T09:30:00Z", "artifact_type": "CALL", "actor": "+919876543210", "target": "+919876543212", "application": "Phone", "metadata": {"duration": 110, "call_type": "OUTGOING"}}
+  ],
+  "injected_burst_events": [
+    {"timestamp": "2026-09-15T21:16:00Z", "artifact_type": "CALL", "actor": "+919876543210", "target": "+919876543299", "application": "Phone", "metadata": {"duration": 15, "call_type": "OUTGOING"}},
+    {"timestamp": "2026-09-15T21:16:45Z", "artifact_type": "CALL", "actor": "+919876543210", "target": "+919876543298", "application": "Phone", "metadata": {"duration": 10, "call_type": "OUTGOING"}},
+    {"timestamp": "2026-09-15T21:17:20Z", "artifact_type": "MESSAGE", "actor": "+919876543210", "target": "+919876543299", "application": "WhatsApp", "metadata": {"direction": "OUTGOING"}},
+    {"timestamp": "2026-09-15T21:18:00Z", "artifact_type": "MESSAGE", "actor": "+919876543210", "target": "+919876543297", "application": "WhatsApp", "metadata": {"direction": "OUTGOING"}},
+    {"timestamp": "2026-09-15T21:18:30Z", "artifact_type": "CALL", "actor": "+919876543299", "target": "+919876543210", "application": "Phone", "metadata": {"duration": 35, "call_type": "INCOMING"}},
+    {"timestamp": "2026-09-15T21:19:15Z", "artifact_type": "MESSAGE", "actor": "+919876543298", "target": "+919876543210", "application": "SMS", "metadata": {"direction": "INCOMING"}},
+    {"timestamp": "2026-09-15T21:20:00Z", "artifact_type": "CALL", "actor": "+919876543210", "target": "+919876543296", "application": "Phone", "metadata": {"duration": 20, "call_type": "OUTGOING"}},
+    {"timestamp": "2026-09-15T21:20:45Z", "artifact_type": "MESSAGE", "actor": "+919876543210", "target": "+919876543295", "application": "Telegram", "metadata": {"direction": "OUTGOING"}},
+    {"timestamp": "2026-09-15T21:21:30Z", "artifact_type": "CALL", "actor": "+919876543296", "target": "+919876543210", "application": "Phone", "metadata": {"duration": 40, "call_type": "INCOMING"}},
+    {"timestamp": "2026-09-15T21:22:10Z", "artifact_type": "MESSAGE", "actor": "+919876543295", "target": "+919876543210", "application": "Telegram", "metadata": {"direction": "INCOMING"}},
+    {"timestamp": "2026-09-15T21:23:00Z", "artifact_type": "CALL", "actor": "+919876543210", "target": "+919876543294", "application": "Phone", "metadata": {"duration": 12, "call_type": "OUTGOING"}},
+    {"timestamp": "2026-09-15T21:23:45Z", "artifact_type": "MESSAGE", "actor": "+919876543210", "target": "+919876543293", "application": "WhatsApp", "metadata": {"direction": "OUTGOING"}},
+    {"timestamp": "2026-09-15T21:24:30Z", "artifact_type": "CALL", "actor": "+919876543294", "target": "+919876543210", "application": "Phone", "metadata": {"duration": 55, "call_type": "INCOMING"}},
+    {"timestamp": "2026-09-15T21:25:15Z", "artifact_type": "MESSAGE", "actor": "+919876543293", "target": "+919876543210", "application": "WhatsApp", "metadata": {"direction": "INCOMING"}},
+    {"timestamp": "2026-09-15T21:26:00Z", "artifact_type": "CALL", "actor": "+919876543210", "target": "+919876543292", "application": "Phone", "metadata": {"duration": 18, "call_type": "OUTGOING"}},
+    {"timestamp": "2026-09-15T21:27:00Z", "artifact_type": "MESSAGE", "actor": "+919876543210", "target": "+919876543291", "application": "SMS", "metadata": {"direction": "OUTGOING"}},
+    {"timestamp": "2026-09-15T21:28:00Z", "artifact_type": "CALL", "actor": "+919876543292", "target": "+919876543210", "application": "Phone", "metadata": {"duration": 30, "call_type": "INCOMING"}},
+    {"timestamp": "2026-09-15T21:29:00Z", "artifact_type": "MESSAGE", "actor": "+919876543291", "target": "+919876543210", "application": "SMS", "metadata": {"direction": "INCOMING"}}
+  ],
+  "injected_night_events": [
+    {"timestamp": "2026-09-18T02:16:00Z", "artifact_type": "APPLICATION", "actor": "Device_01", "target": null, "application": "com.sec.android.app.myfiles", "metadata": {"package": "com.sec.android.app.myfiles"}},
+    {"timestamp": "2026-09-18T02:17:00Z", "artifact_type": "FILESYSTEM", "actor": "Device_01", "target": null, "application": "Filesystem", "metadata": {"file_name": "vault_keys.enc", "size": 4096}},
+    {"timestamp": "2026-09-18T02:18:00Z", "artifact_type": "BROWSER", "actor": "Device_01", "target": null, "application": "com.android.chrome", "metadata": {"url": "https://secure-transfer.io/upload"}},
+    {"timestamp": "2026-09-18T02:19:00Z", "artifact_type": "APPLICATION", "actor": "Device_01", "target": null, "application": "org.torproject.android", "metadata": {"package": "org.torproject.android"}},
+    {"timestamp": "2026-09-18T02:20:00Z", "artifact_type": "FILESYSTEM", "actor": "Device_01", "target": null, "application": "Filesystem", "metadata": {"file_name": "logs_archive.zip", "size": 10485760}},
+    {"timestamp": "2026-09-18T02:21:00Z", "artifact_type": "BROWSER", "actor": "Device_01", "target": null, "application": "com.android.chrome", "metadata": {"url": "https://anonymous-drop.net/confirm"}}
+  ],
+  "injected_contact_diversity_events": [
+    {"timestamp": "2026-09-20T14:01:00Z", "artifact_type": "MESSAGE", "actor": "+919876543210", "target": "+919876540001", "application": "WhatsApp", "metadata": {"direction": "OUTGOING"}},
+    {"timestamp": "2026-09-20T14:02:00Z", "artifact_type": "MESSAGE", "actor": "+919876543210", "target": "+919876540002", "application": "WhatsApp", "metadata": {"direction": "OUTGOING"}},
+    {"timestamp": "2026-09-20T14:03:00Z", "artifact_type": "MESSAGE", "actor": "+919876543210", "target": "+919876540003", "application": "WhatsApp", "metadata": {"direction": "OUTGOING"}},
+    {"timestamp": "2026-09-20T14:04:00Z", "artifact_type": "MESSAGE", "actor": "+919876543210", "target": "+919876540004", "application": "WhatsApp", "metadata": {"direction": "OUTGOING"}},
+    {"timestamp": "2026-09-20T14:05:00Z", "artifact_type": "MESSAGE", "actor": "+919876543210", "target": "+919876540005", "application": "WhatsApp", "metadata": {"direction": "OUTGOING"}},
+    {"timestamp": "2026-09-20T14:06:00Z", "artifact_type": "MESSAGE", "actor": "+919876543210", "target": "+919876540006", "application": "WhatsApp", "metadata": {"direction": "OUTGOING"}},
+    {"timestamp": "2026-09-20T14:07:00Z", "artifact_type": "MESSAGE", "actor": "+919876543210", "target": "+919876540007", "application": "WhatsApp", "metadata": {"direction": "OUTGOING"}},
+    {"timestamp": "2026-09-20T14:08:00Z", "artifact_type": "MESSAGE", "actor": "+919876543210", "target": "+919876540008", "application": "WhatsApp", "metadata": {"direction": "OUTGOING"}},
+    {"timestamp": "2026-09-20T14:09:00Z", "artifact_type": "MESSAGE", "actor": "+919876543210", "target": "+919876540009", "application": "WhatsApp", "metadata": {"direction": "OUTGOING"}},
+    {"timestamp": "2026-09-20T14:10:00Z", "artifact_type": "MESSAGE", "actor": "+919876543210", "target": "+919876540010", "application": "WhatsApp", "metadata": {"direction": "OUTGOING"}}
+  ]
+}

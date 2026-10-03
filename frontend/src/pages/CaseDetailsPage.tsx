@@ -2,17 +2,26 @@ import React, { useEffect, useState } from 'react';
 import { useAuth } from '../services/authContext';
 import { apiClient } from '../services/api/client';
 import type { Case, CaseAccessRole, CaseStatus } from '../types/case';
+import { EvidenceSection } from '../components/EvidenceSection';
 
 interface CaseDetailsPageProps {
   caseId: string;
   onBack: () => void;
+  initialSubTab?: 'evidence' | 'team' | 'pipeline';
 }
 
-export const CaseDetailsPage: React.FC<CaseDetailsPageProps> = ({ caseId, onBack }) => {
+export const CaseDetailsPage: React.FC<CaseDetailsPageProps> = ({
+  caseId,
+  onBack,
+  initialSubTab = 'evidence',
+}) => {
   const { user } = useAuth();
   const [caseData, setCaseData] = useState<Case | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [activeSubTab, setActiveSubTab] = useState<'evidence' | 'team' | 'pipeline'>(
+    initialSubTab
+  );
 
   // Status Change State
   const [isUpdatingStatus, setIsUpdatingStatus] = useState<boolean>(false);
@@ -178,17 +187,60 @@ export const CaseDetailsPage: React.FC<CaseDetailsPageProps> = ({ caseId, onBack
         </div>
       </div>
 
-      {/* Grid: Members & Sub-Module Placeholders */}
-      <div style={styles.mainGrid}>
-        {/* Left Column: Authorized Case Members */}
-        <div style={styles.sectionCard}>
-          <div style={styles.sectionHeader}>
-            <div>
-              <h2 style={styles.sectionTitle}>Authorized Members</h2>
-              <div style={styles.sectionSubtitle}>
-                Personnel with cryptographically verified case-scoping access
-              </div>
-            </div>
+      {/* Case Sub-Navigation Tab Bar */}
+      <div style={styles.subTabBar}>
+        <button
+          onClick={() => setActiveSubTab('evidence')}
+          style={{
+            ...styles.subTabBtn,
+            ...(activeSubTab === 'evidence' ? styles.subTabBtnActive : {}),
+          }}
+        >
+          📦 Evidence Files (Phase 3)
+        </button>
+
+        <button
+          onClick={() => setActiveSubTab('team')}
+          style={{
+            ...styles.subTabBtn,
+            ...(activeSubTab === 'team' ? styles.subTabBtnActive : {}),
+          }}
+        >
+          👥 Authorized Personnel ({caseData.members?.length || 0})
+        </button>
+
+        <button
+          onClick={() => setActiveSubTab('pipeline')}
+          style={{
+            ...styles.subTabBtn,
+            ...(activeSubTab === 'pipeline' ? styles.subTabBtnActive : {}),
+          }}
+        >
+          🔬 Investigation Pipeline (Phases 4-6)
+        </button>
+      </div>
+
+      {/* Tab 1: Evidence Ingestion (Phase 3 Core Feature) */}
+      {activeSubTab === 'evidence' && (
+        <EvidenceSection
+          caseId={caseId}
+          caseNumber={caseData.case_number}
+          currentUserCaseRole={caseData.current_user_role}
+        />
+      )}
+
+      {/* Grid for Team or Pipeline views */}
+      {activeSubTab !== 'evidence' && (
+        <div style={styles.mainGrid}>
+          {activeSubTab === 'team' && (
+            <div style={styles.sectionCard}>
+              <div style={styles.sectionHeader}>
+                <div>
+                  <h2 style={styles.sectionTitle}>Authorized Members</h2>
+                  <div style={styles.sectionSubtitle}>
+                    Personnel with cryptographically verified case-scoping access
+                  </div>
+                </div>
             {isLeadOrAdmin && (
               <button onClick={() => setIsAddMemberOpen(true)} style={styles.addMemberBtn}>
                 + ADD MEMBER
@@ -236,8 +288,10 @@ export const CaseDetailsPage: React.FC<CaseDetailsPageProps> = ({ caseId, onBack
             </tbody>
           </table>
         </div>
+      )}
 
-        {/* Right Column: Case Investigation Pipeline Placeholders */}
+      {/* Right Column: Case Investigation Pipeline Placeholders */}
+      {activeSubTab === 'pipeline' && (
         <div style={styles.sectionCard}>
           <div style={styles.sectionHeader}>
             <div>
@@ -316,7 +370,9 @@ export const CaseDetailsPage: React.FC<CaseDetailsPageProps> = ({ caseId, onBack
             </div>
           </div>
         </div>
-      </div>
+      )}
+    </div>
+  )}
 
       {/* Add Member Modal */}
       {isAddMemberOpen && (
@@ -787,5 +843,39 @@ const styles: Record<string, React.CSSProperties> = {
     borderRadius: '4px',
     fontSize: '11px',
     fontWeight: 600,
+  },
+  subTabBar: {
+    display: 'flex',
+    gap: '8px',
+    borderBottom: '1px solid var(--border-subtle)',
+    paddingBottom: '10px',
+    marginBottom: '8px',
+  },
+  subTabBtn: {
+    backgroundColor: 'var(--bg-card)',
+    color: 'var(--text-muted)',
+    border: '1px solid var(--border-subtle)',
+    padding: '8px 16px',
+    borderRadius: '4px',
+    fontSize: '11px',
+    fontWeight: 700,
+    fontFamily: 'var(--font-mono)',
+    cursor: 'pointer',
+    transition: 'all 0.15s ease',
+  },
+  subTabBtnActive: {
+    backgroundColor: 'rgba(56, 189, 248, 0.12)',
+    color: 'var(--accent-cyan)',
+    borderColor: 'var(--accent-cyan)',
+  },
+  phaseActiveTag: {
+    fontSize: '9px',
+    fontFamily: 'var(--font-mono)',
+    padding: '2px 6px',
+    borderRadius: '3px',
+    backgroundColor: 'rgba(16, 185, 129, 0.15)',
+    color: 'var(--accent-green)',
+    border: '1px solid rgba(16, 185, 129, 0.4)',
+    fontWeight: 700,
   },
 };

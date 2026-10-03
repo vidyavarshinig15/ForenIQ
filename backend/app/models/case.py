@@ -1,11 +1,14 @@
 import uuid
 from datetime import datetime, timezone
-from typing import List, Optional
+from typing import TYPE_CHECKING, List, Optional
 from sqlalchemy import DateTime, Enum as SQLEnum, ForeignKey, String, Text, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from backend.app.core.database import Base
 from backend.app.models.enums import CaseAccessRole, CaseStatus
+
+if TYPE_CHECKING:
+    from backend.app.models.processing_job import ProcessingJob
 
 
 class Case(Base):
@@ -61,6 +64,18 @@ class Case(Base):
     # Relationships
     members: Mapped[List["CaseMember"]] = relationship(
         "CaseMember",
+        back_populates="case",
+        cascade="all, delete-orphan",
+        lazy="selectin",
+    )
+    evidence_items: Mapped[List["Evidence"]] = relationship(
+        "backend.app.models.evidence.Evidence",
+        back_populates="case",
+        cascade="all, delete-orphan",
+        lazy="selectin",
+    )
+    processing_jobs: Mapped[List["ProcessingJob"]] = relationship(
+        "backend.app.models.processing_job.ProcessingJob",
         back_populates="case",
         cascade="all, delete-orphan",
         lazy="selectin",
