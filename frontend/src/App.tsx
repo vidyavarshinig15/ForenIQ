@@ -1,10 +1,19 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { AuthProvider, useAuth } from './services/authContext';
-import { LoginPage } from './pages/LoginPage';
+import { LandingPage } from './pages/LandingPage';
 import { MainLayout } from './layouts/MainLayout';
 
 const AppContent: React.FC = () => {
   const { isAuthenticated, isLoading } = useAuth();
+  const [currentView, setCurrentView] = useState<'landing' | 'workstation'>('landing');
+
+  // When authentication status changes:
+  // If user signs out, ensure they go back to landing page
+  useEffect(() => {
+    if (!isAuthenticated) {
+      setCurrentView('landing');
+    }
+  }, [isAuthenticated]);
 
   if (isLoading) {
     return (
@@ -15,11 +24,19 @@ const AppContent: React.FC = () => {
     );
   }
 
-  if (!isAuthenticated) {
-    return <LoginPage />;
+  if (currentView === 'landing') {
+    return (
+      <LandingPage
+        onNavigateToWorkstation={() => setCurrentView('workstation')}
+      />
+    );
   }
 
-  return <MainLayout />;
+  return (
+    <MainLayout
+      onNavigateToLanding={() => setCurrentView('landing')}
+    />
+  );
 };
 
 export const App: React.FC = () => {
@@ -34,24 +51,26 @@ const styles: Record<string, React.CSSProperties> = {
   loadingScreen: {
     height: '100vh',
     width: '100vw',
-    backgroundColor: 'var(--bg-primary)',
+    backgroundColor: '#0B1220',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
     gap: '16px',
+    backgroundImage: 'radial-gradient(rgba(38, 52, 73, 0.4) 1px, transparent 1px)',
+    backgroundSize: '24px 24px',
   },
   loadingSpinner: {
     fontSize: '28px',
-    color: 'var(--accent-cyan)',
+    color: '#22D3EE',
     animation: 'spin 2s linear infinite',
   },
   loadingText: {
     fontSize: '11px',
-    fontFamily: 'var(--font-mono)',
+    fontFamily: '"IBM Plex Mono", monospace',
     fontWeight: 700,
-    letterSpacing: '1px',
-    color: 'var(--text-muted)',
+    letterSpacing: '0.1em',
+    color: '#94A3B8',
   },
 };
 

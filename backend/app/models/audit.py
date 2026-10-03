@@ -61,3 +61,14 @@ class AuditLog(Base):
         String(100),
         nullable=True,
     )
+
+    @property
+    def details(self) -> Optional[dict]:
+        if self.details_json:
+            try:
+                import json
+                return json.loads(self.details_json)
+            except Exception:
+                return None
+        return None
+

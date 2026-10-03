@@ -1,26 +1,38 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&display=swap');
 
 :root {
-  --bg-primary: #090d16;
-  --bg-surface: #0f172a;
-  --bg-card: #182235;
-  --bg-card-hover: #1e2d45;
-  --border-subtle: #243248;
-  --border-focus: #38bdf8;
-  
-  --text-primary: #f8fafc;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
-  
-  --accent-cyan: #38bdf8;
-  --accent-blue: #3b82f6;
-  --accent-green: #10b981;
-  --accent-amber: #f59e0b;
-  --accent-rose: #f43f5e;
-  
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
-  
+  /* ForenIQ Forensic Command Center Palette */
+  --bg-primary: #0B1220;     /* Deep Workspace Background */
+  --bg-surface: #111827;     /* Surface / Panel Background */
+  --bg-card: #172033;        /* Structured Card Background */
+  --bg-elevated: #1E293B;    /* Elevated Surfaces & Table Headers */
+  --bg-card-hover: #1E293B;
+  --border-subtle: #263449;  /* Technical Grid & Borders */
+  --border-focus: #22D3EE;   /* Active Cyan Focus */
+
+  /* Compatibility Aliases for components */
+  --bg-secondary: #111827;
+  --bg-tertiary: #172033;
+  --border-color: #263449;
+
+  /* Text & Metadata */
+  --text-primary: #F8FAFC;   /* Primary Reading Text */
+  --text-secondary: #94A3B8; /* Explanatory & Secondary */
+  --text-muted: #64748B;     /* Technical Metadata & Timestamps */
+
+  /* Functional Accents */
+  --accent-cyan: #22D3EE;    /* Evidence / Brand / Primary Action */
+  --accent-blue: #3B82F6;    /* AI Engine / Interactive / Analytics */
+  --accent-green: #10B981;   /* Verified Hash / Integrity Confirmed */
+  --accent-amber: #F59E0B;   /* Warning / Anomaly / Attention */
+  --accent-red: #EF4444;     /* Critical / Breach / Error */
+  --accent-rose: #EF4444;
+
+  /* Typography Specifications */
+  --font-heading: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-sans: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'JetBrains Mono', monospace;
+
   --header-height: 56px;
   --sidebar-width: 250px;
 }
@@ -35,19 +47,26 @@ body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
   font-family: var(--font-sans);
-  font-size: 14px;
+  font-size: 13px;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow: hidden;
-  height: 100vh;
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  letter-spacing: -0.02em;
+  font-weight: 700;
+  color: var(--text-primary);
 }
 
 button {
-  font-family: inherit;
+  font-family: var(--font-sans);
   cursor: pointer;
   border: none;
   background: transparent;
+  transition: all 0.15s ease;
 }
 
 a {
@@ -55,7 +74,58 @@ a {
   text-decoration: none;
 }
 
-/* Custom scrollbars for forensic density */
+code, pre, .mono, [data-mono="true"] {
+  font-family: var(--font-mono) !important;
+}
+
+/* Global Form Elements */
+input, select, textarea {
+  background-color: var(--bg-surface);
+  color: var(--text-primary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 0 1px var(--accent-cyan);
+}
+
+input::placeholder, textarea::placeholder {
+  color: var(--text-muted);
+}
+
+/* Global Table Consistency */
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th {
+  background-color: var(--bg-elevated);
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+td {
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+}
+
+tr:hover td {
+  background-color: rgba(30, 41, 59, 0.4);
+}
+
+/* Technical Forensic Scrollbars */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -65,8 +135,65 @@ a {
 }
 ::-webkit-scrollbar-thumb {
   background: var(--border-subtle);
-  border-radius: 3px;
+  border-radius: 2px;
 }
 ::-webkit-scrollbar-thumb:hover {
   background: var(--text-muted);
 }
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(0.96);
+  }
+}
+
+/* Form Switch Controls */
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-switch input:checked + .slider-round {
+  background-color: #22D3EE !important;
+}
+
+.toggle-switch .slider-round:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: #0B1220;
+  transition: 0.25s;
+  border-radius: 50%;
+}
+
+.toggle-switch input:checked + .slider-round:before {
+  transform: translateX(20px);
+  background-color: #0B1220;
+}
+

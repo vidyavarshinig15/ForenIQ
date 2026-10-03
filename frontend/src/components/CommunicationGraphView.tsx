@@ -7,7 +7,6 @@ import type {
   GraphNode,
   GraphQueryResponse,
   GraphSnapshotRecord,
-  NodeType,
 } from '../types/graph';
 
 interface CommunicationGraphViewProps {
@@ -15,27 +14,6 @@ interface CommunicationGraphViewProps {
   caseData: Case | null;
 }
 
-// Community color palette
-const COMMUNITY_COLORS = [
-  '#38bdf8', // sky
-  '#34d399', // emerald
-  '#fbbf24', // amber
-  '#f472b6', // pink
-  '#a78bfa', // purple
-  '#fb923c', // orange
-  '#2dd4bf', // teal
-  '#818cf8', // indigo
-];
-
-// Node type color palette
-const NODE_TYPE_COLORS: Record<NodeType, string> = {
-  PERSON: '#38bdf8',
-  PHONE_NUMBER: '#34d399',
-  EMAIL: '#fbbf24',
-  ACCOUNT: '#a78bfa',
-  DEVICE: '#fb923c',
-  APPLICATION: '#2dd4bf',
-};
 
 export const CommunicationGraphView: React.FC<CommunicationGraphViewProps> = ({
   caseId,
@@ -182,10 +160,16 @@ export const CommunicationGraphView: React.FC<CommunicationGraphViewProps> = ({
   };
 
   const getNodeColor = (node: GraphNode) => {
-    if (colorMode === 'community' && node.community_id !== undefined && node.community_id !== null) {
-      return COMMUNITY_COLORS[node.community_id % COMMUNITY_COLORS.length];
+    if (selectedNode?.node_id === node.node_id) {
+      return '#22D3EE'; // Selected node
     }
-    return NODE_TYPE_COLORS[node.node_type] || '#94a3b8';
+    if ((node as any).is_anomalous || (node as any).severity === 'CRITICAL') {
+      return '#EF4444'; // Critical / anomalous node
+    }
+    if (node.degree > 6 || (node.betweenness && node.betweenness > 0.3)) {
+      return '#F59E0B'; // Important node
+    }
+    return '#3B82F6'; // Normal node
   };
 
   return (
@@ -410,9 +394,9 @@ export const CommunicationGraphView: React.FC<CommunicationGraphViewProps> = ({
                       y1={sPos.y}
                       x2={tPos.x}
                       y2={tPos.y}
-                      stroke={isSelected ? '#38bdf8' : '#334155'}
+                      stroke={isSelected ? '#22D3EE' : '#475569'}
                       strokeWidth={isSelected ? strokeWidth + 2 : strokeWidth}
-                      strokeOpacity={0.7}
+                      strokeOpacity={isSelected ? 1 : 0.75}
                       style={{ cursor: 'pointer' }}
                     />
                   </g>
@@ -438,16 +422,16 @@ export const CommunicationGraphView: React.FC<CommunicationGraphViewProps> = ({
                     <circle
                       r={radius}
                       fill={color}
-                      fillOpacity={0.85}
-                      stroke={isSelected ? '#ffffff' : '#0f172a'}
+                      fillOpacity={0.9}
+                      stroke={isSelected ? '#22D3EE' : '#1E293B'}
                       strokeWidth={isSelected ? 3 : 1.5}
                     />
                     <text
                       dy={radius + 14}
                       textAnchor="middle"
-                      fill="#f8fafc"
+                      fill="#F8FAFC"
                       fontSize="11px"
-                      fontFamily="monospace"
+                      fontFamily='"IBM Plex Mono", monospace'
                       fontWeight={600}
                     >
                       {node.display_label.length > 18
@@ -641,14 +625,14 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
-    backgroundColor: 'var(--bg-primary, #0a0f1d)',
-    color: 'var(--text-primary, #f8fafc)',
-    fontFamily: 'var(--font-sans, system-ui, sans-serif)',
+    backgroundColor: '#0B1220',
+    color: '#F8FAFC',
+    fontFamily: '"IBM Plex Sans", sans-serif',
   },
   header: {
     padding: '14px 20px',
-    backgroundColor: 'var(--bg-surface, #0f172a)',
-    borderBottom: '1px solid var(--border-subtle, #1e293b)',
+    backgroundColor: '#111827',
+    borderBottom: '1px solid #263449',
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -661,18 +645,22 @@ const styles: Record<string, React.CSSProperties> = {
     gap: '10px',
   },
   headerIcon: {
-    fontSize: '26px',
+    fontSize: '22px',
+    color: '#3B82F6',
   },
   headerTitle: {
+    fontFamily: '"Space Grotesk", sans-serif',
     fontSize: '17px',
     fontWeight: 700,
     margin: 0,
-    color: '#f8fafc',
+    color: '#F8FAFC',
+    letterSpacing: '-0.02em',
   },
   headerSubtitle: {
     fontSize: '12px',
-    color: '#94a3b8',
+    color: '#94A3B8',
     marginTop: '2px',
+    fontFamily: '"IBM Plex Sans", sans-serif',
   },
   headerMetricsBar: {
     display: 'flex',
@@ -688,32 +676,35 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    backgroundColor: '#1e293b',
-    border: '1px solid #334155',
+    backgroundColor: '#172033',
+    border: '1px solid #263449',
     padding: '4px 8px',
-    borderRadius: '4px',
+    borderRadius: '2px',
     minWidth: '55px',
   },
   mVal: {
     fontSize: '12px',
     fontWeight: 700,
-    color: '#38bdf8',
-    fontFamily: 'monospace',
+    color: '#22D3EE',
+    fontFamily: '"IBM Plex Mono", monospace',
   },
   mKey: {
     fontSize: '9px',
-    color: '#94a3b8',
-    letterSpacing: '0.5px',
+    color: '#64748B',
+    letterSpacing: '0.05em',
+    fontFamily: '"IBM Plex Mono", monospace',
   },
   snapshotBtn: {
-    backgroundColor: '#083344',
-    border: '1px solid #0891b2',
-    color: '#38bdf8',
+    backgroundColor: 'rgba(34, 211, 238, 0.1)',
+    border: '1px solid #22D3EE',
+    color: '#22D3EE',
     fontSize: '11px',
     fontWeight: 700,
     padding: '6px 12px',
-    borderRadius: '4px',
+    borderRadius: '2px',
     cursor: 'pointer',
+    fontFamily: '"Space Grotesk", sans-serif',
+    letterSpacing: '0.05em',
   },
   workspace: {
     flex: 1,
@@ -722,8 +713,8 @@ const styles: Record<string, React.CSSProperties> = {
   },
   controlsSidebar: {
     width: '280px',
-    backgroundColor: 'var(--bg-surface, #0f172a)',
-    borderRight: '1px solid var(--border-subtle, #1e293b)',
+    backgroundColor: '#111827',
+    borderRight: '1px solid #263449',
     padding: '16px',
     overflowY: 'auto',
     display: 'flex',
@@ -735,24 +726,26 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    borderBottom: '1px solid #1e293b',
+    borderBottom: '1px solid #263449',
     paddingBottom: '8px',
   },
   controlsTitle: {
     fontSize: '11px',
     fontWeight: 700,
-    color: '#94a3b8',
-    letterSpacing: '0.5px',
+    color: '#94A3B8',
+    letterSpacing: '0.05em',
+    fontFamily: '"IBM Plex Mono", monospace',
   },
   applyBtn: {
-    backgroundColor: '#0891b2',
-    color: '#ffffff',
+    backgroundColor: '#22D3EE',
+    color: '#0B1220',
     border: 'none',
-    borderRadius: '4px',
-    padding: '4px 8px',
+    borderRadius: '2px',
+    padding: '4px 10px',
     fontSize: '11px',
     fontWeight: 700,
     cursor: 'pointer',
+    fontFamily: '"Space Grotesk", sans-serif',
   },
   filterSection: {
     display: 'flex',
@@ -762,8 +755,9 @@ const styles: Record<string, React.CSSProperties> = {
   inputLabel: {
     fontSize: '10px',
     fontWeight: 700,
-    color: '#64748b',
-    letterSpacing: '0.5px',
+    color: '#64748B',
+    letterSpacing: '0.05em',
+    fontFamily: '"IBM Plex Mono", monospace',
   },
   labelWithVal: {
     display: 'flex',
@@ -773,33 +767,36 @@ const styles: Record<string, React.CSSProperties> = {
   valChip: {
     fontSize: '10px',
     fontWeight: 700,
-    color: '#38bdf8',
-    backgroundColor: '#1e293b',
+    color: '#22D3EE',
+    backgroundColor: '#172033',
     padding: '2px 6px',
-    borderRadius: '3px',
-    fontFamily: 'monospace',
+    borderRadius: '2px',
+    fontFamily: '"IBM Plex Mono", monospace',
+    border: '1px solid #263449',
   },
   textInput: {
-    backgroundColor: '#090d16',
-    border: '1px solid #334155',
-    color: '#f8fafc',
+    backgroundColor: '#111827',
+    border: '1px solid #263449',
+    color: '#F8FAFC',
     fontSize: '12px',
     padding: '8px 10px',
-    borderRadius: '4px',
+    borderRadius: '2px',
     outline: 'none',
+    fontFamily: '"IBM Plex Sans", sans-serif',
   },
   dateInput: {
-    backgroundColor: '#090d16',
-    border: '1px solid #334155',
-    color: '#f8fafc',
+    backgroundColor: '#111827',
+    border: '1px solid #263449',
+    color: '#F8FAFC',
     fontSize: '11px',
     padding: '6px 8px',
-    borderRadius: '4px',
+    borderRadius: '2px',
     outline: 'none',
+    fontFamily: '"IBM Plex Mono", monospace',
   },
   rangeInput: {
     width: '100%',
-    accentColor: '#0891b2',
+    accentColor: '#22D3EE',
     cursor: 'pointer',
   },
   checkboxGroup: {
@@ -809,7 +806,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
   checkLabel: {
     fontSize: '11px',
-    color: '#cbd5e1',
+    color: '#94A3B8',
     display: 'flex',
     alignItems: 'center',
     gap: '6px',
@@ -822,37 +819,40 @@ const styles: Record<string, React.CSSProperties> = {
   },
   radioLabel: {
     fontSize: '11px',
-    color: '#cbd5e1',
+    color: '#94A3B8',
     display: 'flex',
     alignItems: 'center',
     gap: '6px',
     cursor: 'pointer',
   },
   safetyBox: {
-    backgroundColor: '#090d16',
-    border: '1px solid #1e293b',
-    borderRadius: '4px',
+    backgroundColor: '#172033',
+    border: '1px solid #263449',
+    borderRadius: '2px',
     padding: '10px',
     marginTop: 'auto',
   },
   safetyHeading: {
     fontSize: '9px',
     fontWeight: 700,
-    color: '#38bdf8',
-    letterSpacing: '0.5px',
+    color: '#3B82F6',
+    letterSpacing: '0.05em',
     marginBottom: '4px',
+    fontFamily: '"IBM Plex Mono", monospace',
   },
   safetyText: {
     fontSize: '10px',
-    color: '#94a3b8',
+    color: '#94A3B8',
     lineHeight: 1.4,
     margin: 0,
   },
   canvasContainer: {
     flex: 1,
     position: 'relative',
-    backgroundColor: '#060913',
+    backgroundColor: '#0B1220',
     overflow: 'hidden',
+    backgroundImage: 'radial-gradient(rgba(38, 52, 73, 0.4) 1px, transparent 1px)',
+    backgroundSize: '24px 24px',
   },
   canvasToolbar: {
     position: 'absolute',
@@ -863,15 +863,15 @@ const styles: Record<string, React.CSSProperties> = {
     zIndex: 10,
   },
   toolBtn: {
-    backgroundColor: 'rgba(15, 23, 42, 0.85)',
-    border: '1px solid #334155',
-    color: '#e2e8f0',
+    backgroundColor: '#172033',
+    border: '1px solid #263449',
+    color: '#F8FAFC',
     fontSize: '10px',
     fontWeight: 700,
     padding: '5px 10px',
-    borderRadius: '4px',
+    borderRadius: '2px',
     cursor: 'pointer',
-    backdropFilter: 'blur(4px)',
+    fontFamily: '"IBM Plex Mono", monospace',
   },
   svgCanvas: {
     width: '100%',
@@ -882,18 +882,19 @@ const styles: Record<string, React.CSSProperties> = {
     position: 'absolute',
     top: '12px',
     right: '12px',
-    backgroundColor: '#450a0a',
-    border: '1px solid #dc2626',
-    color: '#fca5a5',
+    backgroundColor: 'rgba(239, 68, 68, 0.1)',
+    border: '1px solid #EF4444',
+    color: '#EF4444',
     fontSize: '12px',
     padding: '8px 12px',
-    borderRadius: '4px',
+    borderRadius: '2px',
     zIndex: 10,
+    fontFamily: '"IBM Plex Mono", monospace',
   },
   inspectorSidebar: {
     width: '320px',
-    backgroundColor: 'var(--bg-surface, #0f172a)',
-    borderLeft: '1px solid var(--border-subtle, #1e293b)',
+    backgroundColor: '#111827',
+    borderLeft: '1px solid #263449',
     overflowY: 'auto',
     padding: '16px',
     flexShrink: 0,
@@ -911,63 +912,65 @@ const styles: Record<string, React.CSSProperties> = {
   inspTypeBadge: {
     fontSize: '10px',
     fontWeight: 700,
-    backgroundColor: '#083344',
-    border: '1px solid #0891b2',
-    color: '#38bdf8',
+    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+    border: '1px solid #3B82F6',
+    color: '#3B82F6',
     padding: '2px 6px',
-    borderRadius: '3px',
+    borderRadius: '2px',
+    fontFamily: '"IBM Plex Mono", monospace',
   },
   inspCloseBtn: {
     background: 'none',
     border: 'none',
-    color: '#94a3b8',
+    color: '#94A3B8',
     cursor: 'pointer',
     fontSize: '14px',
   },
   inspTitle: {
+    fontFamily: '"Space Grotesk", sans-serif',
     fontSize: '15px',
     fontWeight: 700,
     margin: 0,
-    color: '#f8fafc',
+    color: '#F8FAFC',
   },
   inspId: {
     fontSize: '11px',
-    color: '#64748b',
-    fontFamily: 'monospace',
+    color: '#64748B',
+    fontFamily: '"IBM Plex Mono", monospace',
     wordBreak: 'break-all',
   },
   metricsTable: {
     display: 'flex',
     flexDirection: 'column',
     gap: '6px',
-    backgroundColor: '#090d16',
-    border: '1px solid #1e293b',
-    borderRadius: '4px',
+    backgroundColor: '#172033',
+    border: '1px solid #263449',
+    borderRadius: '2px',
     padding: '10px',
   },
   metricRow: {
     display: 'flex',
     justifyContent: 'space-between',
     fontSize: '11px',
-    borderBottom: '1px solid #131d33',
+    borderBottom: '1px solid #263449',
     paddingBottom: '4px',
   },
   mLabel: {
-    color: '#94a3b8',
+    color: '#94A3B8',
   },
   mValHighlight: {
-    color: '#38bdf8',
+    color: '#22D3EE',
     fontWeight: 700,
-    fontFamily: 'monospace',
+    fontFamily: '"IBM Plex Mono", monospace',
   },
   edgeEndpoints: {
     display: 'flex',
     flexDirection: 'column',
     gap: '4px',
-    backgroundColor: '#090d16',
+    backgroundColor: '#172033',
     padding: '10px',
-    borderRadius: '4px',
-    border: '1px solid #1e293b',
+    borderRadius: '2px',
+    border: '1px solid #263449',
   },
   endpointBox: {
     display: 'flex',
@@ -976,31 +979,33 @@ const styles: Record<string, React.CSSProperties> = {
   endpointLabel: {
     fontSize: '9px',
     fontWeight: 700,
-    color: '#64748b',
+    color: '#64748B',
+    fontFamily: '"IBM Plex Mono", monospace',
   },
   endpointVal: {
     fontSize: '11px',
-    color: '#f8fafc',
-    fontFamily: 'monospace',
+    color: '#F8FAFC',
+    fontFamily: '"IBM Plex Mono", monospace',
     wordBreak: 'break-all',
   },
   endpointArrow: {
     textAlign: 'center',
-    color: '#38bdf8',
+    color: '#22D3EE',
     fontSize: '12px',
   },
   sourceRefBox: {
-    backgroundColor: '#090d16',
-    border: '1px solid #1e293b',
-    borderRadius: '4px',
+    backgroundColor: '#172033',
+    border: '1px solid #263449',
+    borderRadius: '2px',
     padding: '10px',
   },
   refBoxTitle: {
     fontSize: '10px',
     fontWeight: 700,
-    color: '#64748b',
-    letterSpacing: '0.5px',
+    color: '#64748B',
+    letterSpacing: '0.05em',
     marginBottom: '6px',
+    fontFamily: '"IBM Plex Mono", monospace',
   },
   refList: {
     display: 'flex',
@@ -1011,11 +1016,11 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: '10px',
     display: 'flex',
     justifyContent: 'space-between',
-    color: '#cbd5e1',
+    color: '#94A3B8',
   },
   refMono: {
-    fontFamily: 'monospace',
-    color: '#38bdf8',
+    fontFamily: '"IBM Plex Mono", monospace',
+    color: '#22D3EE',
   },
   emptyInspector: {
     display: 'flex',
@@ -1024,17 +1029,19 @@ const styles: Record<string, React.CSSProperties> = {
     justifyContent: 'center',
     textAlign: 'center',
     height: '100%',
-    color: '#64748b',
+    color: '#64748B',
     padding: '20px',
   },
   emptyInspIcon: {
     fontSize: '32px',
     marginBottom: '10px',
+    color: '#3B82F6',
   },
   emptyInspTitle: {
+    fontFamily: '"Space Grotesk", sans-serif',
     fontSize: '14px',
     fontWeight: 700,
-    color: '#94a3b8',
+    color: '#94A3B8',
     marginBottom: '6px',
   },
   emptyInspText: {
@@ -1047,16 +1054,17 @@ const styles: Record<string, React.CSSProperties> = {
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.75)',
+    backgroundColor: 'rgba(11, 18, 32, 0.85)',
+    backdropFilter: 'blur(4px)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     zIndex: 1000,
   },
   modalCard: {
-    backgroundColor: '#0f172a',
-    border: '1px solid #334155',
-    borderRadius: '8px',
+    backgroundColor: '#172033',
+    border: '1px solid #263449',
+    borderRadius: '4px',
     width: '90%',
     maxWidth: '550px',
     maxHeight: '80vh',
@@ -1064,6 +1072,7 @@ const styles: Record<string, React.CSSProperties> = {
     flexDirection: 'column',
     padding: '20px',
     gap: '16px',
+    boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.7)',
   },
   modalHeader: {
     display: 'flex',
@@ -1071,32 +1080,34 @@ const styles: Record<string, React.CSSProperties> = {
     alignItems: 'center',
   },
   modalTitle: {
+    fontFamily: '"Space Grotesk", sans-serif',
     fontSize: '16px',
     fontWeight: 700,
-    color: '#f8fafc',
+    color: '#F8FAFC',
   },
   snapshotForm: {
     display: 'flex',
     flexDirection: 'column',
     gap: '6px',
-    backgroundColor: '#090d16',
-    border: '1px solid #1e293b',
+    backgroundColor: '#111827',
+    border: '1px solid #263449',
     padding: '12px',
-    borderRadius: '6px',
+    borderRadius: '2px',
   },
   saveRow: {
     display: 'flex',
     gap: '8px',
   },
   saveBtn: {
-    backgroundColor: '#0891b2',
-    color: '#ffffff',
+    backgroundColor: '#22D3EE',
+    color: '#0B1220',
     border: 'none',
-    borderRadius: '4px',
+    borderRadius: '2px',
     padding: '0 14px',
     fontSize: '12px',
     fontWeight: 700,
     cursor: 'pointer',
+    fontFamily: '"Space Grotesk", sans-serif',
   },
   snapshotListSection: {
     display: 'flex',
@@ -1107,12 +1118,13 @@ const styles: Record<string, React.CSSProperties> = {
   snapshotListTitle: {
     fontSize: '11px',
     fontWeight: 700,
-    color: '#64748b',
-    letterSpacing: '0.5px',
+    color: '#64748B',
+    letterSpacing: '0.05em',
+    fontFamily: '"IBM Plex Mono", monospace',
   },
   noSnapshots: {
     fontSize: '12px',
-    color: '#64748b',
+    color: '#64748B',
     padding: '10px 0',
   },
   snapshotsList: {
@@ -1121,9 +1133,9 @@ const styles: Record<string, React.CSSProperties> = {
     gap: '6px',
   },
   snapshotItem: {
-    backgroundColor: '#090d16',
-    border: '1px solid #1e293b',
-    borderRadius: '4px',
+    backgroundColor: '#111827',
+    border: '1px solid #263449',
+    borderRadius: '2px',
     padding: '10px 12px',
     display: 'flex',
     justifyContent: 'space-between',
@@ -1132,19 +1144,21 @@ const styles: Record<string, React.CSSProperties> = {
   snapTitleText: {
     fontSize: '13px',
     fontWeight: 600,
-    color: '#f8fafc',
+    color: '#F8FAFC',
   },
   snapMetaText: {
     fontSize: '10px',
-    color: '#94a3b8',
+    color: '#94A3B8',
     marginTop: '2px',
+    fontFamily: '"IBM Plex Mono", monospace',
   },
   snapIdBadge: {
     fontSize: '10px',
-    fontFamily: 'monospace',
-    color: '#38bdf8',
-    backgroundColor: '#083344',
+    fontFamily: '"IBM Plex Mono", monospace',
+    color: '#22D3EE',
+    backgroundColor: 'rgba(34, 211, 238, 0.1)',
+    border: '1px solid rgba(34, 211, 238, 0.3)',
     padding: '2px 6px',
-    borderRadius: '3px',
+    borderRadius: '2px',
   },
 };

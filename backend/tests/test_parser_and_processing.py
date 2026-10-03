@@ -549,11 +549,16 @@ def test_partial_success_with_malformed_xml():
 
     asyncio.run(run_worker())
 
-    status_res = client.get(
-        f"/api/v1/cases/{case_id}/processing-jobs/{job_id}",
-        headers=headers,
-    )
-    job = status_res.json()
+    for _ in range(30):
+        status_res = client.get(
+            f"/api/v1/cases/{case_id}/processing-jobs/{job_id}",
+            headers=headers,
+        )
+        job = status_res.json()
+        if job["status"] in ("PARTIAL", "COMPLETED", "FAILED"):
+            break
+        time.sleep(0.2)
+
     assert job["status"] in ("PARTIAL", "COMPLETED")
     assert job["artifacts_total"] == 1
     error_or_warning_msgs = job["summary_json"].get("warnings", []) + job["summary_json"].get("errors", [])

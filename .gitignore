@@ -1,9 +1,11 @@
+# ==============================================================================
+# ForenIQ Git Ignore Configuration
+# ==============================================================================
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
-*.py[cod]
+*.py[codz]
 *$py.class
-
-# C extensions
 *.so
 
 # Distribution / packaging
@@ -27,14 +29,14 @@ share/python-wheels/
 MANIFEST
 
 # Virtual Environments
-.env
-.venv
 .venv/
-env/
+.venv
 venv/
+env/
 ENV/
 env.bak/
 venv.bak/
+.envrc
 
 # Node / Frontend
 node_modules/
@@ -77,6 +79,7 @@ vector_indices/
 *.pfx
 credentials.json
 service-account*.json
+.streamlit/secrets.toml
 
 # IDE & OS
 .vscode/
@@ -91,6 +94,7 @@ service-account*.json
 .Trashes
 ehthumbs.db
 Thumbs.db
+tempCodeRunnerFile.py
 
 # Test coverage & reports
 htmlcov/
@@ -102,13 +106,31 @@ htmlcov/
 nosetests.xml
 coverage.xml
 *.cover
-*.py,cover
+*.py.cover
 .hypothesis/
 .pytest_cache/
+cover/
 
-# Celery / Redis state & Logs
+# Celery / Redis / RabbitMQ state & Logs
 *.log
 logs/
-celerybeat-schedule
+celerybeat-schedule*
 celerybeat.pid
+*.rdb
+*.aof
+*.pid
 dump.rdb
+mnesia/
+rabbitmq/
+rabbitmq-data/
+activemq-data/
+
+# Tools & Caches
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
+.pytype/
+.ruff_cache/
+.ipynb_checkpoints
+docs/_build/

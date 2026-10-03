@@ -287,43 +287,38 @@ export const EvidenceSection: React.FC<EvidenceSectionProps> = ({
 function getStatusBadgeStyle(status: EvidenceStatus): React.CSSProperties {
   switch (status) {
     case 'VALID':
+    case 'PROCESSED':
       return {
-        backgroundColor: 'rgba(16, 185, 129, 0.15)',
-        color: 'var(--accent-green)',
-        borderColor: 'rgba(16, 185, 129, 0.4)',
+        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+        color: '#10B981',
+        borderColor: 'rgba(16, 185, 129, 0.3)',
       };
     case 'UPLOADED':
     case 'VALIDATING':
     case 'UPLOADING':
       return {
-        backgroundColor: 'rgba(56, 189, 248, 0.15)',
-        color: 'var(--accent-cyan)',
-        borderColor: 'rgba(56, 189, 248, 0.4)',
+        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+        color: '#3B82F6',
+        borderColor: 'rgba(59, 130, 246, 0.3)',
       };
     case 'QUARANTINED':
       return {
-        backgroundColor: 'rgba(245, 158, 11, 0.15)',
-        color: 'var(--accent-amber)',
-        borderColor: 'rgba(245, 158, 11, 0.4)',
-      };
-    case 'PROCESSED':
-      return {
-        backgroundColor: 'rgba(56, 189, 248, 0.15)',
-        color: 'var(--accent-cyan)',
-        borderColor: 'rgba(56, 189, 248, 0.4)',
+        backgroundColor: 'rgba(245, 158, 11, 0.1)',
+        color: '#F59E0B',
+        borderColor: 'rgba(245, 158, 11, 0.3)',
       };
     case 'FAILED':
     case 'INVALID':
       return {
-        backgroundColor: 'rgba(239, 68, 68, 0.15)',
-        color: 'var(--accent-red)',
-        borderColor: 'rgba(239, 68, 68, 0.4)',
+        backgroundColor: 'rgba(239, 68, 68, 0.1)',
+        color: '#EF4444',
+        borderColor: 'rgba(239, 68, 68, 0.3)',
       };
     default:
       return {
-        backgroundColor: 'rgba(255, 255, 255, 0.05)',
-        color: 'var(--text-secondary)',
-        borderColor: 'var(--border-subtle)',
+        backgroundColor: '#1E293B',
+        color: '#94A3B8',
+        borderColor: '#263449',
       };
   }
 }
@@ -332,34 +327,33 @@ function getIntegrityBadgeStyle(status?: string): React.CSSProperties {
   switch (status) {
     case 'VALID':
       return {
-        backgroundColor: 'rgba(16, 185, 129, 0.12)',
-        color: 'var(--accent-green)',
-        borderColor: 'rgba(16, 185, 129, 0.4)',
+        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+        color: '#10B981',
+        borderColor: 'rgba(16, 185, 129, 0.3)',
       };
     case 'MISMATCH':
       return {
-        backgroundColor: 'rgba(239, 68, 68, 0.15)',
-        color: 'var(--accent-red)',
-        borderColor: 'rgba(239, 68, 68, 0.5)',
+        backgroundColor: 'rgba(239, 68, 68, 0.1)',
+        color: '#EF4444',
+        borderColor: 'rgba(239, 68, 68, 0.3)',
       };
     case 'MISSING':
       return {
-        backgroundColor: 'rgba(245, 158, 11, 0.15)',
-        color: 'var(--accent-amber)',
-        borderColor: 'rgba(245, 158, 11, 0.5)',
+        backgroundColor: 'rgba(245, 158, 11, 0.1)',
+        color: '#F59E0B',
+        borderColor: 'rgba(245, 158, 11, 0.3)',
       };
     case 'UNKNOWN':
     default:
       return {
-        backgroundColor: 'rgba(148, 163, 184, 0.1)',
-        color: 'var(--text-muted)',
-        borderColor: 'rgba(148, 163, 184, 0.3)',
+        backgroundColor: '#1E293B',
+        color: '#64748B',
+        borderColor: '#263449',
       };
   }
 }
 
 const styles: Record<string, React.CSSProperties> = {
-
   container: {
     display: 'flex',
     flexDirection: 'column',
@@ -383,8 +377,8 @@ const styles: Record<string, React.CSSProperties> = {
   searchBox: {
     display: 'flex',
     alignItems: 'center',
-    backgroundColor: 'var(--bg-card)',
-    border: '1px solid var(--border-subtle)',
+    backgroundColor: '#111827',
+    border: '1px solid #263449',
     borderRadius: '4px',
     padding: '0 12px',
     flex: 1,
@@ -394,21 +388,22 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: '12px',
     marginRight: '8px',
     opacity: 0.6,
+    color: '#94A3B8',
   },
   searchInput: {
     background: 'none',
     border: 'none',
-    color: 'var(--text-primary)',
+    color: '#F8FAFC',
     fontSize: '12px',
     outline: 'none',
     width: '100%',
     fontFamily: 'var(--font-sans)',
   },
   statusSelect: {
-    backgroundColor: 'var(--bg-card)',
-    border: '1px solid var(--border-subtle)',
+    backgroundColor: '#111827',
+    border: '1px solid #263449',
     borderRadius: '4px',
-    color: 'var(--text-secondary)',
+    color: '#94A3B8',
     fontSize: '11px',
     fontWeight: 600,
     fontFamily: 'var(--font-mono)',
@@ -423,10 +418,10 @@ const styles: Record<string, React.CSSProperties> = {
     gap: '10px',
   },
   uploadBtn: {
-    backgroundColor: 'var(--accent-cyan)',
-    color: '#000000',
+    backgroundColor: '#22D3EE',
+    color: '#0B1220',
     border: 'none',
-    padding: '0 16px',
+    padding: '0 18px',
     height: '36px',
     borderRadius: '4px',
     fontSize: '11px',
@@ -437,31 +432,34 @@ const styles: Record<string, React.CSSProperties> = {
     alignItems: 'center',
     justifyContent: 'center',
     transition: 'all 0.15s ease',
+    cursor: 'pointer',
   },
   errorBox: {
     backgroundColor: 'rgba(239, 68, 68, 0.1)',
-    border: '1px solid rgba(239, 68, 68, 0.4)',
+    border: '1px solid rgba(239, 68, 68, 0.3)',
     borderRadius: '4px',
     padding: '10px 14px',
-    color: 'var(--accent-red)',
+    color: '#EF4444',
     fontSize: '12px',
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
+    fontFamily: 'var(--font-mono)',
   },
   retryBtn: {
     background: 'none',
-    border: '1px solid var(--accent-red)',
-    color: 'var(--accent-red)',
+    border: '1px solid #EF4444',
+    color: '#EF4444',
     borderRadius: '3px',
     padding: '2px 8px',
     fontSize: '10px',
+    fontFamily: 'var(--font-mono)',
     cursor: 'pointer',
   },
   tableCard: {
-    backgroundColor: 'var(--bg-secondary)',
-    border: '1px solid var(--border-subtle)',
-    borderRadius: '6px',
+    backgroundColor: '#172033',
+    border: '1px solid #263449',
+    borderRadius: '4px',
     overflow: 'hidden',
   },
   emptyState: {
@@ -480,26 +478,27 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: '28px',
   },
   emptyTitle: {
-    fontSize: '15px',
+    fontSize: '14px',
+    fontFamily: 'var(--font-heading)',
     fontWeight: 700,
-    color: 'var(--text-primary)',
+    color: '#F8FAFC',
   },
   emptySub: {
     fontSize: '12px',
-    color: 'var(--text-muted)',
+    color: '#64748B',
     maxWidth: '400px',
   },
   emptyUploadBtn: {
     marginTop: '8px',
-    backgroundColor: 'var(--bg-card)',
-    border: '1px solid var(--accent-cyan)',
-    color: 'var(--accent-cyan)',
+    backgroundColor: '#22D3EE',
+    color: '#0B1220',
     padding: '8px 16px',
     borderRadius: '4px',
     fontSize: '11px',
     fontWeight: 700,
     fontFamily: 'var(--font-mono)',
     cursor: 'pointer',
+    letterSpacing: '0.5px',
   },
   table: {
     width: '100%',
@@ -507,49 +506,51 @@ const styles: Record<string, React.CSSProperties> = {
     textAlign: 'left',
   },
   headerRow: {
-    backgroundColor: 'var(--bg-card)',
-    borderBottom: '1px solid var(--border-subtle)',
+    backgroundColor: '#1E293B',
+    borderBottom: '1px solid #263449',
   },
   th: {
     padding: '12px 16px',
     fontSize: '10px',
     fontWeight: 700,
-    color: 'var(--text-muted)',
+    color: '#64748B',
     fontFamily: 'var(--font-mono)',
-    letterSpacing: '0.5px',
+    letterSpacing: '0.8px',
+    textTransform: 'uppercase',
   },
   thRight: {
     padding: '12px 16px',
     fontSize: '10px',
     fontWeight: 700,
-    color: 'var(--text-muted)',
+    color: '#64748B',
     fontFamily: 'var(--font-mono)',
-    letterSpacing: '0.5px',
+    letterSpacing: '0.8px',
     textAlign: 'right',
+    textTransform: 'uppercase',
   },
   row: {
-    borderBottom: '1px solid var(--border-subtle)',
+    borderBottom: '1px solid #263449',
     cursor: 'pointer',
     transition: 'background-color 0.15s ease',
   },
   td: {
     padding: '12px 16px',
     fontSize: '12px',
-    color: 'var(--text-primary)',
+    color: '#F8FAFC',
     verticalAlign: 'middle',
   },
   tdMono: {
     padding: '12px 16px',
     fontSize: '11px',
     fontFamily: 'var(--font-mono)',
-    color: 'var(--text-secondary)',
+    color: '#94A3B8',
     verticalAlign: 'middle',
   },
   tdDate: {
     padding: '12px 16px',
     fontSize: '11px',
     fontFamily: 'var(--font-mono)',
-    color: 'var(--text-muted)',
+    color: '#64748B',
     verticalAlign: 'middle',
   },
   tdRight: {
@@ -567,21 +568,23 @@ const styles: Record<string, React.CSSProperties> = {
   },
   fileName: {
     fontWeight: 600,
-    color: 'var(--text-primary)',
+    fontFamily: 'var(--font-mono)',
+    color: '#F8FAFC',
   },
   formatSub: {
     fontSize: '9px',
     fontFamily: 'var(--font-mono)',
-    color: 'var(--text-muted)',
+    color: '#64748B',
     marginTop: '2px',
   },
   badge: {
     padding: '3px 8px',
-    borderRadius: '4px',
+    borderRadius: '3px',
     border: '1px solid',
     fontSize: '10px',
     fontWeight: 700,
     fontFamily: 'var(--font-mono)',
+    letterSpacing: '0.5px',
   },
   hashContainer: {
     display: 'flex',
@@ -589,19 +592,22 @@ const styles: Record<string, React.CSSProperties> = {
     gap: '6px',
   },
   hashText: {
-    color: 'var(--accent-cyan)',
-    backgroundColor: 'var(--bg-primary)',
+    color: '#22D3EE',
+    backgroundColor: '#111827',
     padding: '2px 6px',
     borderRadius: '3px',
-    border: '1px solid rgba(56, 189, 248, 0.2)',
+    border: '1px solid rgba(34, 211, 238, 0.25)',
+    fontFamily: 'var(--font-mono)',
+    fontSize: '11px',
   },
   examinerName: {
     fontWeight: 600,
-    color: 'var(--text-secondary)',
+    color: '#94A3B8',
   },
   examinerEmail: {
     fontSize: '10px',
-    color: 'var(--text-muted)',
+    color: '#64748B',
+    fontFamily: 'var(--font-mono)',
     marginTop: '2px',
   },
   actionGroup: {
@@ -610,25 +616,27 @@ const styles: Record<string, React.CSSProperties> = {
     gap: '8px',
   },
   actionBtn: {
-    backgroundColor: 'var(--bg-card)',
-    color: 'var(--text-secondary)',
-    border: '1px solid var(--border-subtle)',
-    padding: '4px 10px',
+    backgroundColor: '#1E293B',
+    color: '#94A3B8',
+    border: '1px solid #263449',
+    padding: '5px 12px',
     borderRadius: '3px',
     fontSize: '11px',
     fontWeight: 600,
     fontFamily: 'var(--font-mono)',
     cursor: 'pointer',
+    letterSpacing: '0.5px',
   },
   downloadActionBtn: {
-    backgroundColor: 'rgba(56, 189, 248, 0.1)',
-    color: 'var(--accent-cyan)',
-    border: '1px solid rgba(56, 189, 248, 0.3)',
-    padding: '4px 10px',
+    backgroundColor: '#1E293B',
+    color: '#22D3EE',
+    border: '1px solid #263449',
+    padding: '5px 12px',
     borderRadius: '3px',
     fontSize: '11px',
     fontWeight: 600,
     fontFamily: 'var(--font-mono)',
     cursor: 'pointer',
+    letterSpacing: '0.5px',
   },
 };

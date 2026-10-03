@@ -3,6 +3,7 @@ import { Header } from '../components/Header';
 import { Sidebar } from '../components/Sidebar';
 import { CaseDetailsPage } from '../pages/CaseDetailsPage';
 import { CasesPage } from '../pages/CasesPage';
+import { DashboardPage } from '../pages/DashboardPage';
 import { PlaceholderPage } from '../pages/PlaceholderPage';
 import { SearchPage } from '../components/SearchPage';
 import { InvestigatorAssistant } from '../components/InvestigatorAssistant';
@@ -10,12 +11,18 @@ import { CommunicationGraphView } from '../components/CommunicationGraphView';
 import { TimelineView } from '../components/TimelineView';
 import { AnomalyDashboardView } from '../components/AnomalyDashboardView';
 import { ReportBuilderView } from '../components/ReportBuilderView';
+import { AuditLogsPage } from '../pages/AuditLogsPage';
+import { SettingsPage } from '../pages/SettingsPage';
 import { apiClient } from '../services/api/client';
 import type { Case } from '../types/case';
 import type { NavigationTab } from '../types/navigation';
 import { NAVIGATION_ITEMS } from '../utils/navigationConfig';
 
-export const MainLayout: React.FC = () => {
+interface MainLayoutProps {
+  onNavigateToLanding?: () => void;
+}
+
+export const MainLayout: React.FC<MainLayoutProps> = ({ onNavigateToLanding }) => {
   const [activeTab, setActiveTab] = useState<NavigationTab>('cases');
   const [selectedCaseId, setSelectedCaseId] = useState<string | null>(null);
   const [activeCase, setActiveCase] = useState<Case | null>(null);
@@ -50,14 +57,29 @@ export const MainLayout: React.FC = () => {
 
   return (
     <div style={styles.layout}>
-      <Header activeCase={activeCase} onClearActiveCase={handleClearCase} />
+      <Header
+        activeTab={activeTab}
+        onSelectTab={(tab) => setActiveTab(tab)}
+        activeCase={activeCase}
+        onClearActiveCase={handleClearCase}
+        onNavigateToLanding={onNavigateToLanding}
+        onNewCase={() => {
+          setSelectedCaseId(null);
+          setActiveTab('cases');
+        }}
+      />
       <div style={styles.body}>
         <Sidebar activeTab={activeTab} onSelectTab={(tab) => {
           setActiveTab(tab);
           // If moving away from cases tab, we keep the active case scope in header
         }} />
         <main style={styles.mainContent}>
-          {activeTab === 'cases' ? (
+          {activeTab === 'dashboard' ? (
+            <DashboardPage
+              onOpenCase={(caseId) => { setSelectedCaseId(caseId); setActiveTab('cases'); }}
+              onNavigate={(tab) => setActiveTab(tab as NavigationTab)}
+            />
+          ) : activeTab === 'cases' ? (
             selectedCaseId ? (
               <CaseDetailsPage caseId={selectedCaseId} onBack={handleClearCase} />
             ) : (
@@ -177,6 +199,10 @@ export const MainLayout: React.FC = () => {
                 </button>
               </div>
             )
+          ) : activeTab === 'audit' ? (
+            <AuditLogsPage />
+          ) : activeTab === 'settings' ? (
+            <SettingsPage />
           ) : (
             <PlaceholderPage item={currentItem} />
           )}
@@ -192,7 +218,7 @@ const styles: Record<string, React.CSSProperties> = {
     flexDirection: 'column',
     height: '100vh',
     width: '100vw',
-    backgroundColor: 'var(--bg-primary)',
+    backgroundColor: '#0B1220',
     overflow: 'hidden',
   },
   body: {
@@ -205,7 +231,12 @@ const styles: Record<string, React.CSSProperties> = {
     flex: 1,
     height: '100%',
     overflowY: 'auto',
-    backgroundColor: 'var(--bg-primary)',
+    backgroundColor: '#0B1220',
+    backgroundImage: `
+      linear-gradient(to right, rgba(38, 52, 73, 0.15) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(38, 52, 73, 0.15) 1px, transparent 1px)
+    `,
+    backgroundSize: '32px 32px',
   },
   noCasePrompt: {
     display: 'flex',
@@ -213,38 +244,43 @@ const styles: Record<string, React.CSSProperties> = {
     alignItems: 'center',
     justifyContent: 'center',
     height: '100%',
-    padding: '32px',
+    padding: '40px',
     textAlign: 'center',
-    gap: '12px',
+    gap: '14px',
   },
   noCaseIcon: {
-    fontSize: '48px',
-    opacity: 0.6,
+    fontSize: '42px',
+    color: '#22D3EE',
+    opacity: 0.8,
   },
   noCaseTitle: {
-    fontSize: '18px',
+    fontSize: '20px',
     fontWeight: 700,
-    color: 'var(--text-primary)',
+    fontFamily: "'Space Grotesk', sans-serif",
+    color: '#F8FAFC',
     margin: 0,
+    letterSpacing: '-0.3px',
   },
   noCaseText: {
     fontSize: '13px',
-    color: 'var(--text-muted)',
-    maxWidth: '480px',
-    lineHeight: '1.5',
+    fontFamily: "'IBM Plex Sans', sans-serif",
+    color: '#94A3B8',
+    maxWidth: '520px',
+    lineHeight: '1.6',
     margin: 0,
   },
   selectCaseBtn: {
-    marginTop: '12px',
-    backgroundColor: 'var(--accent-cyan)',
-    color: '#000000',
-    border: 'none',
-    padding: '10px 20px',
-    borderRadius: '4px',
-    fontSize: '11px',
+    marginTop: '10px',
+    backgroundColor: '#22D3EE',
+    color: '#0B1220',
+    border: '1px solid #22D3EE',
+    padding: '10px 22px',
+    borderRadius: '2px',
+    fontSize: '12px',
     fontWeight: 700,
-    fontFamily: 'var(--font-mono)',
+    fontFamily: "'IBM Plex Mono', monospace",
     cursor: 'pointer',
-    letterSpacing: '0.5px',
+    letterSpacing: '0.8px',
+    boxShadow: '0 4px 14px rgba(34, 211, 238, 0.25)',
   },
 };

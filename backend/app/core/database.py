@@ -20,7 +20,18 @@ class Base(DeclarativeBase):
     pass
 
 
-connect_args = {"check_same_thread": False, "timeout": 30.0} if "sqlite" in settings.DATABASE_URL else {}
+import ssl
+
+connect_args = {}
+if "sqlite" in settings.DATABASE_URL:
+    connect_args = {"check_same_thread": False, "timeout": 30.0}
+else:
+    # Enable SSL for remote cloud databases (Supabase, Neon, AWS RDS, etc.)
+    if "localhost" not in settings.DATABASE_URL and "127.0.0.1" not in settings.DATABASE_URL:
+        ssl_ctx = ssl.create_default_context()
+        ssl_ctx.check_hostname = False
+        ssl_ctx.verify_mode = ssl.CERT_NONE
+        connect_args["ssl"] = ssl_ctx
 engine_kwargs = {
     "echo": False,
     "future": True,

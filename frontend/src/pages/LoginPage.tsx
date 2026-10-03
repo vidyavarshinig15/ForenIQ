@@ -25,7 +25,7 @@ export const LoginPage: React.FC = () => {
 
   const handleFillAdmin = () => {
     setEmail('admin@ufdr.org');
-    setPassword('ForensicAdmin2026!');
+    setPassword('helloitsme');
   };
 
   return (
@@ -33,6 +33,11 @@ export const LoginPage: React.FC = () => {
       <div style={styles.loginCard}>
         {/* Header Branding */}
         <div style={styles.brandHeader}>
+          <img
+            src="/foreniq-logo.png"
+            alt="ForenIQ"
+            style={{ height: '46px', width: 'auto', display: 'block', margin: '0 auto 16px auto', objectFit: 'contain' }}
+          />
           <div style={styles.badge}>UFDR FORENSICS</div>
           <h1 style={styles.title}>Investigator Workstation</h1>
           <p style={styles.subtitle}>
@@ -49,7 +54,7 @@ export const LoginPage: React.FC = () => {
           <div style={styles.hintText}>
             Email: <code style={styles.code}>admin@ufdr.org</code>
             <br />
-            Password: <code style={styles.code}>ForensicAdmin2026!</code>
+            Password: <code style={styles.code}>helloitsme</code>
           </div>
           <button type="button" onClick={handleFillAdmin} style={styles.autofillBtn}>
             Autofill Admin Credentials
@@ -248,15 +253,16 @@ const styles: Record<string, React.CSSProperties> = {
     outline: 'none',
   },
   submitBtn: {
-    backgroundColor: 'var(--accent-blue)',
-    color: '#ffffff',
-    fontWeight: 600,
+    backgroundColor: '#22D3EE',
+    color: '#0B1220',
+    fontWeight: 800,
     fontSize: '12px',
-    letterSpacing: '0.5px',
+    letterSpacing: '0.8px',
     padding: '12px',
     borderRadius: '4px',
     marginTop: '6px',
-    transition: 'background 0.2s',
+    boxShadow: '0 4px 14px rgba(34, 211, 238, 0.3)',
+    transition: 'all 0.2s',
   },
   cardFooter: {
     textAlign: 'center',

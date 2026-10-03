@@ -197,21 +197,31 @@ export const TimelineView: React.FC<TimelineViewProps> = ({ caseId, caseData }) 
           ) : (
             timelineData?.events.map((ev, idx) => {
               const isSelected = selectedEvent?.event_id === ev.event_id;
+              const isCritical = (ev as any).severity === 'CRITICAL' || (ev as any).is_critical;
+              const isAnomaly = (ev as any).is_anomalous || (ev as any).is_anomaly || ev.timestamp_status === 'ANOMALOUS';
+              const eventAccent = isCritical ? '#EF4444' : isAnomaly ? '#F59E0B' : isSelected ? '#22D3EE' : '#3B82F6';
+
               return (
                 <div
                   key={ev.event_id || idx}
                   onClick={() => setSelectedEvent(ev)}
                   style={{
                     ...styles.eventCard,
-                    borderColor: isSelected ? 'var(--accent-cyan)' : 'var(--border-subtle)',
-                    backgroundColor: isSelected ? 'rgba(0, 240, 255, 0.08)' : 'var(--bg-card)',
+                    borderColor: isSelected ? '#22D3EE' : '#263449',
+                    borderLeft: `3px solid ${eventAccent}`,
+                    backgroundColor: isSelected ? 'rgba(34, 211, 238, 0.06)' : '#172033',
                   }}
                 >
                   <div style={styles.cardHeader}>
                     <span style={styles.eventTime}>
                       {ev.timestamp ? new Date(ev.timestamp).toLocaleString() : 'Timestamp Unavailable'}
                     </span>
-                    <span style={styles.eventTypeBadge}>
+                    <span style={{
+                      ...styles.eventTypeBadge,
+                      color: eventAccent,
+                      borderColor: eventAccent,
+                      backgroundColor: `${eventAccent}15`,
+                    }}>
                       {getEventIcon(ev.event_type)} {ev.event_type}
                     </span>
                   </div>
@@ -312,10 +322,11 @@ const styles: Record<string, React.CSSProperties> = {
     flexDirection: 'column',
     height: '100%',
     padding: '24px',
-    backgroundColor: 'var(--bg-primary)',
-    color: 'var(--text-primary)',
+    backgroundColor: '#0B1220',
+    color: '#F8FAFC',
     boxSizing: 'border-box',
     overflowY: 'auto',
+    fontFamily: '"IBM Plex Sans", sans-serif',
   },
   header: {
     display: 'flex',
@@ -327,42 +338,45 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'inline-block',
     fontSize: '10px',
     fontWeight: 700,
-    fontFamily: 'var(--font-mono)',
-    color: 'var(--accent-cyan)',
-    letterSpacing: '1px',
+    fontFamily: '"IBM Plex Mono", monospace',
+    color: '#22D3EE',
+    letterSpacing: '0.05em',
     marginBottom: '4px',
   },
   title: {
+    fontFamily: '"Space Grotesk", sans-serif',
     fontSize: '22px',
-    fontWeight: 800,
+    fontWeight: 700,
     margin: 0,
-    color: 'var(--text-primary)',
+    color: '#F8FAFC',
+    letterSpacing: '-0.02em',
   },
   subtitle: {
     fontSize: '13px',
-    color: 'var(--text-muted)',
+    color: '#94A3B8',
     margin: '4px 0 0 0',
   },
   caseBadge: {
-    backgroundColor: 'rgba(0, 240, 255, 0.08)',
-    border: '1px solid rgba(0, 240, 255, 0.2)',
+    backgroundColor: '#172033',
+    border: '1px solid #263449',
     padding: '6px 12px',
-    borderRadius: '4px',
+    borderRadius: '2px',
     fontSize: '12px',
-    fontFamily: 'var(--font-mono)',
+    fontFamily: '"IBM Plex Mono", monospace',
+    color: '#22D3EE',
   },
   caseLabel: {
-    color: 'var(--text-muted)',
+    color: '#64748B',
     fontWeight: 700,
   },
   filterToolbar: {
     display: 'flex',
     gap: '12px',
     alignItems: 'flex-end',
-    backgroundColor: 'var(--bg-secondary)',
+    backgroundColor: '#111827',
     padding: '16px',
-    borderRadius: '6px',
-    border: '1px solid var(--border-subtle)',
+    borderRadius: '4px',
+    border: '1px solid #263449',
     marginBottom: '12px',
     flexWrap: 'wrap',
   },
@@ -375,30 +389,33 @@ const styles: Record<string, React.CSSProperties> = {
   },
   filterLabel: {
     fontSize: '10px',
-    fontFamily: 'var(--font-mono)',
+    fontFamily: '"IBM Plex Mono", monospace',
     fontWeight: 700,
-    color: 'var(--text-muted)',
+    color: '#64748B',
+    letterSpacing: '0.05em',
   },
   input: {
-    backgroundColor: 'var(--bg-primary)',
-    border: '1px solid var(--border-subtle)',
-    color: 'var(--text-primary)',
+    backgroundColor: '#0B1220',
+    border: '1px solid #263449',
+    color: '#F8FAFC',
     padding: '8px 12px',
-    borderRadius: '4px',
+    borderRadius: '2px',
     fontSize: '12px',
     outline: 'none',
+    fontFamily: '"IBM Plex Sans", sans-serif',
   },
   applyBtn: {
-    backgroundColor: 'var(--accent-cyan)',
-    color: '#000000',
+    backgroundColor: '#22D3EE',
+    color: '#0B1220',
     border: 'none',
     padding: '9px 18px',
-    borderRadius: '4px',
+    borderRadius: '2px',
     fontSize: '11px',
     fontWeight: 700,
-    fontFamily: 'var(--font-mono)',
+    fontFamily: '"Space Grotesk", sans-serif',
     cursor: 'pointer',
     height: '35px',
+    letterSpacing: '0.05em',
   },
   typeRibbon: {
     display: 'flex',

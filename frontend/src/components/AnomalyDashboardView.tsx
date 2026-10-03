@@ -60,14 +60,15 @@ export const AnomalyDashboardView: React.FC<AnomalyDashboardViewProps> = ({
 
   const getSeverityColor = (severity: string) => {
     switch (severity) {
+      case 'CRITICAL_ANOMALY':
+        return '#EF4444'; // Red only for genuinely critical
       case 'HIGH_ANOMALY':
-        return '#ff5555';
       case 'MODERATE_ANOMALY':
-        return '#ffb86c';
+        return '#F59E0B'; // Amber as primary anomaly/warning color
       case 'LOW_ANOMALY':
-        return '#8be9fd';
+        return '#3B82F6'; // AI / primary blue for low severity
       default:
-        return 'var(--text-muted)';
+        return '#94A3B8';
     }
   };
 
@@ -353,10 +354,11 @@ const styles: Record<string, React.CSSProperties> = {
     flexDirection: 'column',
     height: '100%',
     padding: '24px',
-    backgroundColor: 'var(--bg-primary)',
-    color: 'var(--text-primary)',
+    backgroundColor: '#0B1220',
+    color: '#F8FAFC',
     boxSizing: 'border-box',
     overflowY: 'auto',
+    fontFamily: '"IBM Plex Sans", sans-serif',
   },
   header: {
     display: 'flex',
@@ -368,40 +370,43 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'inline-block',
     fontSize: '10px',
     fontWeight: 700,
-    fontFamily: 'var(--font-mono)',
-    color: 'var(--accent-cyan)',
-    letterSpacing: '1px',
+    fontFamily: '"IBM Plex Mono", monospace',
+    color: '#22D3EE',
+    letterSpacing: '0.05em',
     marginBottom: '4px',
   },
   title: {
+    fontFamily: '"Space Grotesk", sans-serif',
     fontSize: '22px',
-    fontWeight: 800,
+    fontWeight: 700,
     margin: 0,
-    color: 'var(--text-primary)',
+    color: '#F8FAFC',
+    letterSpacing: '-0.02em',
   },
   subtitle: {
     fontSize: '13px',
-    color: 'var(--text-muted)',
+    color: '#94A3B8',
     margin: '4px 0 0 0',
     maxWidth: '700px',
   },
   caseBadge: {
-    backgroundColor: 'rgba(0, 240, 255, 0.08)',
-    border: '1px solid rgba(0, 240, 255, 0.2)',
+    backgroundColor: '#172033',
+    border: '1px solid #263449',
     padding: '6px 12px',
-    borderRadius: '4px',
+    borderRadius: '2px',
     fontSize: '12px',
-    fontFamily: 'var(--font-mono)',
+    fontFamily: '"IBM Plex Mono", monospace',
+    color: '#22D3EE',
   },
   caseLabel: {
-    color: 'var(--text-muted)',
+    color: '#64748B',
     fontWeight: 700,
   },
   controlPanel: {
-    backgroundColor: 'var(--bg-secondary)',
+    backgroundColor: '#111827',
     padding: '16px',
-    borderRadius: '6px',
-    border: '1px solid var(--border-subtle)',
+    borderRadius: '4px',
+    border: '1px solid #263449',
     marginBottom: '16px',
   },
   controlRow: {
@@ -419,42 +424,47 @@ const styles: Record<string, React.CSSProperties> = {
   },
   label: {
     fontSize: '10px',
-    fontFamily: 'var(--font-mono)',
+    fontFamily: '"IBM Plex Mono", monospace',
     fontWeight: 700,
-    color: 'var(--text-muted)',
+    color: '#64748B',
+    letterSpacing: '0.05em',
   },
   select: {
-    backgroundColor: 'var(--bg-primary)',
-    border: '1px solid var(--border-subtle)',
-    color: 'var(--text-primary)',
+    backgroundColor: '#0B1220',
+    border: '1px solid #263449',
+    color: '#F8FAFC',
     padding: '8px 12px',
-    borderRadius: '4px',
+    borderRadius: '2px',
     fontSize: '12px',
     outline: 'none',
+    fontFamily: '"IBM Plex Sans", sans-serif',
   },
   input: {
-    backgroundColor: 'var(--bg-primary)',
-    border: '1px solid var(--border-subtle)',
-    color: 'var(--text-primary)',
+    backgroundColor: '#0B1220',
+    border: '1px solid #263449',
+    color: '#F8FAFC',
     padding: '8px 12px',
-    borderRadius: '4px',
+    borderRadius: '2px',
     fontSize: '12px',
     outline: 'none',
+    fontFamily: '"IBM Plex Sans", sans-serif',
   },
   range: {
     marginTop: '6px',
+    accentColor: '#22D3EE',
   },
   runBtn: {
-    backgroundColor: 'var(--accent-cyan)',
-    color: '#000000',
+    backgroundColor: '#22D3EE',
+    color: '#0B1220',
     border: 'none',
     padding: '10px 20px',
-    borderRadius: '4px',
+    borderRadius: '2px',
     fontSize: '11px',
     fontWeight: 700,
-    fontFamily: 'var(--font-mono)',
+    fontFamily: '"Space Grotesk", sans-serif',
     cursor: 'pointer',
     height: '35px',
+    letterSpacing: '0.05em',
   },
   statsStrip: {
     display: 'flex',

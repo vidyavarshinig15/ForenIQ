@@ -123,7 +123,8 @@ class AuthService:
         # Audit successful authentication
         await self.audit_service.record_event(
             action=AuditAction.LOGIN_SUCCESS.value,
-            resource_type="AUTH",
+            resource_type="AUTH_SESSION",
+            resource_id=user.email,
             user_id=user.id,
             status="SUCCESS",
             details={"email": user.email, "role": user.role.value},
@@ -142,7 +143,8 @@ class AuthService:
     async def logout(self, user_id: UUID, client_ip: Optional[str] = None) -> None:
         await self.audit_service.record_event(
             action=AuditAction.LOGOUT.value,
-            resource_type="AUTH",
+            resource_type="AUTH_SESSION",
+            resource_id=str(user_id),
             user_id=user_id,
             status="SUCCESS",
             client_ip=client_ip,

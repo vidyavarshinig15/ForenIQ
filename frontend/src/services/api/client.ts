@@ -676,6 +676,14 @@ class ForensicApiClient {
   async listUsers(): Promise<User[]> {
     return this.request<User[]>('/users');
   }
+
+  // --- Audit ---
+  async getAuditLogs(caseId?: string, limit: number = 100): Promise<any[]> {
+    const params = new URLSearchParams();
+    if (caseId) params.append('case_id', caseId);
+    params.append('limit', String(limit));
+    return this.request<any[]>(`/audit?${params.toString()}`);
+  }
 }
 
 
