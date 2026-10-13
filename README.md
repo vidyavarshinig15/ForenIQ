@@ -6,6 +6,10 @@
 
 ForenIQ is an AI-assisted digital forensic investigation platform designed to analyze Universal Forensic Data Extraction (UFDR) packages and mobile extractions. It enables forensic examiners and investigators to ingest, correlate, search, and review digital artifacts through evidence-grounded, verifiable analysis.
 
+## System Workflow Architecture
+
+![ForenIQ System Workflow Architecture](docs/assets/system_workflow_architecture.png)
+
 ## Key Features
 
 - **Secure Evidence Ingestion**: Streaming archive inspection with Zip-Slip traversal rejection and immutable storage.
